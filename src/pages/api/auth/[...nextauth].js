@@ -3,7 +3,6 @@ import CredentialsProvider from "next-auth/providers/credentials";
 import { PrismaAdapter } from "@next-auth/prisma-adapter"
 import prisma from "../../../utils/prismadb"
 const bcrypt = require('bcrypt');
-const saltRounds = 10;
 
 export const authOptions = {
     adapter: PrismaAdapter(prisma),
@@ -13,7 +12,7 @@ export const authOptions = {
     },
     session: {
         strategy: "jwt",
-        maxAge: 30 * 24 * 60 * 60,
+        maxAge: 7 * 24 * 60 * 60,
     },
     jwt: {
         secret: process.env.NEXTAUTH_SECRET,

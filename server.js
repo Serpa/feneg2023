@@ -3,9 +3,11 @@ const { parse } = require("url");
 const next = require("next");
 const fs = require("fs");
 const dev = process.env.NODE_ENV !== "production";
-const app = next({ dev });
-const handle = app.getRequestHandler();
 const ip = require('ip');
+const hostname = ip.address();
+const port = 3000;
+const app = next({ dev, hostname, port });
+const handle = app.getRequestHandler();
 const httpsOptions = {
   key: fs.readFileSync("./certificates/localhost.key"),
   cert: fs.readFileSync("./certificates/localhost.crt"),

@@ -34,16 +34,32 @@ model Session {
   user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 
+model Stage {
+  id       String     @id @default(auto()) @map("_id") @db.ObjectId
+  name     String     @unique
+  Presenca Presenca[]
+}
+
+model Presenca {
+  id      String   @id @default(auto()) @map("_id") @db.ObjectId
+  userId  String   @db.ObjectId
+  data    DateTime
+  stageId String   @db.ObjectId
+  user    User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  stage   Stage    @relation(fields: [stageId], references: [id], onDelete: Cascade)
+}
+
 model User {
-  id            String    @id @default(auto()) @map("_id") @db.ObjectId
-  name          String?
-  email         String?   @unique
-  phone         String?   @unique
-  password      String?
+  id            String     @id @default(auto()) @map("_id") @db.ObjectId
+  name          String
+  email         String     @unique
+  phone         String     @unique
+  password      String
   emailVerified DateTime?
   image         String?
   accounts      Account[]
   sessions      Session[]
+  Presenca      Presenca[]
 }
 
 model VerificationToken {

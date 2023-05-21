@@ -10,23 +10,16 @@ import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import InputMask from 'react-input-mask';
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 import axios from 'axios';
+import Copyright from '../components/copyright'
+import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
+import { app } from '../utils/firebase'
+import { signIn } from 'next-auth/react';
+import { useRouter } from 'next/router';
+import LoadingButton from '@mui/lab/LoadingButton';
 
-function Copyright(props) {
-  return (
-    <Typography variant="body2" color="text.secondary" align="center" {...props}>
-      {'Copyright © '}
-      <Link color="inherit" href="https://mui.com/">
-        Your Website
-      </Link>{' '}
-      {new Date().getFullYear()}
-      {'.'}
-    </Typography>
-  );
-}
-
-// TODO remove, this demo shouldn't need to reset the theme.
+const storage = getStorage(app);
 
 const defaultTheme = createTheme();
 
@@ -35,17 +28,50 @@ export default function SignUp() {
   const [phone, setPhone] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const handleSubmit = (event) => {
+  const [selectedImage, setSelectedImage] = useState(null);
+  const [previewImage, setPreviewImage] = useState(null);
+  const [loading, setLoading] = useState(false)
+  const router = useRouter();
+
+  const handleSubmit = async (event) => {
+    setLoading(false)
     event.preventDefault();
-    axios.post('/api/register', {
-      name, phone, email, password
-    })
-      .then(function (response) {
-        console.log(response);
+    if (name.length < 3 || phone.length < 11 || email.length < 5 || password.length < 6) {
+      return false
+    } else {
+      console.log(name, phone, email, password);
+      const user = await axios.post('/api/register', {
+        name, phone, email, password
       })
-      .catch(function (error) {
-        console.error(error);
-      });
+      const fileRef = ref(storage, `avatars/${user.data.id}.jpg`);
+      await uploadBytes(fileRef, selectedImage)
+      const photo_url = await getDownloadURL(fileRef);
+      const userWithPhoto = await axios.post('/api/register/photo', {
+        id: user.data.id,
+        photo: photo_url
+      })
+      const auth = await signIn("credentials", {
+        email: email,
+        password: password,
+        callbackUrl: "/",
+        redirect: false,
+      })
+      if (auth.ok) {
+        router.push(auth.url);
+      }
+    }
+    setLoading(false)
+  };
+
+  const handleFileChange = (event) => {
+    if (event.target.files[0]) {
+      const file = event.target.files[0];
+      setSelectedImage(file);
+      const previewURL = URL.createObjectURL(file);
+      setPreviewImage(previewURL);
+    } else {
+      return null
+    }
 
   };
 
@@ -65,10 +91,29 @@ export default function SignUp() {
             <LockOutlinedIcon />
           </Avatar>
           <Typography component="h1" variant="h5">
-            Sign up
+            Cadastrar
           </Typography>
           <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 3 }}>
             <Grid container spacing={2}>
+              <Grid item xs={12} sx={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center' }}>
+                <label htmlFor="upload-photo" style={{ padding: 10 }}>
+                  <input
+                    style={{ display: 'none' }}
+                    id="upload-photo"
+                    name="upload-photo"
+                    type="file" accept="image/png, image/gif, image/jpeg" onChange={handleFileChange}
+                  />
+                  <Button color="action" variant="contained" component="span">
+                    Selecionar Foto
+                  </Button>
+                </label>
+                {/* <Input type="file" accept="image/png, image/gif, image/jpeg" onChange={handleFileChange} /> */}
+                {selectedImage ? (<Avatar
+                  alt="Remy Sharp"
+                  src={previewImage}
+                  sx={{ width: 250, height: 250 }}
+                />) : false}
+              </Grid>
               <Grid item xs={12}>
                 <TextField
                   autoComplete="given-name"
@@ -125,25 +170,26 @@ export default function SignUp() {
                 />
               </Grid>
             </Grid>
-            <Button
+            <LoadingButton
+              loading={loading}
               type="submit"
               fullWidth
               variant="contained"
               sx={{ mt: 3, mb: 2 }}
             >
-              Sign Up
-            </Button>
+              Cadastrar
+            </LoadingButton>
             <Grid container justifyContent="flex-end">
               <Grid item>
                 <Link href="#" variant="body2">
-                  Already have an account? Sign in
+                  Já tem uma conta? Clique aqui
                 </Link>
               </Grid>
             </Grid>
           </Box>
         </Box>
         <Copyright sx={{ mt: 5 }} />
-      </Container>
-    </ThemeProvider>
+      </Container >
+    </ThemeProvider >
   );
 }

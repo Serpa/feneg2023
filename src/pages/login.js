@@ -1,5 +1,5 @@
 import Avatar from '@mui/material/Avatar';
-import Button from '@mui/material/Button';
+import LoadingButton from '@mui/lab/LoadingButton';
 import CssBaseline from '@mui/material/CssBaseline';
 import TextField from '@mui/material/TextField';
 import Link from '@mui/material/Link';
@@ -9,7 +9,7 @@ import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-import { signIn } from "next-auth/react";
+import { signIn, useSession } from "next-auth/react";
 import { useState } from 'react';
 import { useRouter } from 'next/router';
 
@@ -34,15 +34,17 @@ export default function SignUp() {
   const router = useRouter();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [loading, setLoading] = useState(false)
   const handleSubmit = (event) => {
-    console.log(email);
     event.preventDefault();
+    setLoading(true)
     signIn("credentials", {
       email: email,
       password: password,
       callbackUrl: "/",
       redirect: false,
     }).then((result) => {
+      setLoading(false)
       if (result.ok) {
         router.push(result.url);
       }
@@ -101,14 +103,15 @@ export default function SignUp() {
                 />
               </Grid> */}
             </Grid>
-            <Button
+            <LoadingButton
+              loading={loading}
               type="submit"
               fullWidth
               variant="contained"
               sx={{ mt: 3, mb: 2 }}
             >
               Entrar
-            </Button>
+            </LoadingButton>
             <Grid container justifyContent="flex-end">
               <Grid item>
                 <Link href="/register" variant="body2">
