@@ -1,58 +1,69 @@
-import Avatar from '@mui/material/Avatar';
-import LoadingButton from '@mui/lab/LoadingButton';
-import CssBaseline from '@mui/material/CssBaseline';
-import TextField from '@mui/material/TextField';
-import Link from '@mui/material/Link';
-import Grid from '@mui/material/Grid';
-import Box from '@mui/material/Box';
-import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
-import Typography from '@mui/material/Typography';
-import Container from '@mui/material/Container';
-import { createTheme, ThemeProvider } from '@mui/material/styles';
-import { signIn, useSession } from "next-auth/react";
 import { useState } from 'react';
+import { useForm } from 'react-hook-form';
+import { signIn } from 'next-auth/react';
 import { useRouter } from 'next/router';
-
-function Copyright(props) {
-  return (
-    <Typography variant="body2" color="text.secondary" align="center" {...props}>
-      {'Copyright © '}
-      <Link color="inherit" href="https://mui.com/">
-        Your Website
-      </Link>{' '}
-      {new Date().getFullYear()}
-      {'.'}
-    </Typography>
-  );
-}
-
-// TODO remove, this demo shouldn't need to reset the theme.
+import {
+  Avatar,
+  Box,
+  Container,
+  CssBaseline,
+  Grid,
+  Link,
+  TextField,
+  Typography,
+  createTheme,
+  ThemeProvider,
+  fabClasses,
+  Alert,
+} from '@mui/material';
+import LoadingButton from '@mui/lab/LoadingButton';
+import { styled } from '@mui/system';
+import Copyright from '../components/copyright'
+import Image from 'next/image';
+import Head from 'next/head';
 
 const defaultTheme = createTheme();
 
+const ErrorText = styled(Typography)`
+  color: red;
+`;
+
 export default function SignUp() {
   const router = useRouter();
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [loading, setLoading] = useState(false)
-  const handleSubmit = (event) => {
-    event.preventDefault();
-    setLoading(true)
-    signIn("credentials", {
-      email: email,
-      password: password,
-      callbackUrl: "/",
-      redirect: false,
-    }).then((result) => {
-      setLoading(false)
+  const { handleSubmit, register, formState: { errors } } = useForm();
+  const [loading, setLoading] = useState(false);
+  const [errorLogin, setErrorLogin] = useState('');
+
+  const onSubmit = async (data) => {
+    setLoading(true);
+    setErrorLogin('')
+    const { email, password } = data;
+    try {
+      const result = await signIn('credentials', {
+        redirect: false,
+        email,
+        password,
+        callbackUrl: '/',
+      });
+      if (result.status === 401) {
+        setLoading(false);
+        setErrorLogin('E-mail e/ou senha incorretos.')
+      }
       if (result.ok) {
         router.push(result.url);
       }
-    })
+    } catch (error) {
+      setLoading(false);
+      setErrorLogin('Erro ao entrar')
+      console.log('Sign in error:', error);
+    }
   };
 
   return (
     <ThemeProvider theme={defaultTheme}>
+      <Head>
+        <title>Entrar - FENEG 2023 - Sicoob Frutal</title>
+      </Head>
       <Container component="main" maxWidth="xs">
         <CssBaseline />
         <Box
@@ -63,52 +74,55 @@ export default function SignUp() {
             alignItems: 'center',
           }}
         >
-          <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
-            <LockOutlinedIcon />
-          </Avatar>
+          <Image width={50} height={50} src={require('../../public/sicoob.png')} />
           <Typography component="h1" variant="h5">
             Login
           </Typography>
-          <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 3 }}>
+          <Box component="form" noValidate onSubmit={handleSubmit(onSubmit)} sx={{ mt: 3 }}>
             <Grid container spacing={2}>
               <Grid item xs={12}>
                 <TextField
                   required
                   fullWidth
                   id="email"
-                  label="Email Address"
+                  label="E-mail"
                   name="email"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
+                  {...register('email', {
+                    required: 'Este campo é obrigatório',
+                    pattern: {
+                      value: /\S+@\S+\.\S+/,
+                      message: 'Endereço de e-mail inválido',
+                    },
+                  })}
                   autoComplete="email"
                 />
+                {errors.email && <ErrorText>Este campo é obrigatório</ErrorText>}
               </Grid>
               <Grid item xs={12}>
                 <TextField
                   required
                   fullWidth
                   name="password"
-                  label="Password"
+                  label="Senha"
                   type="password"
                   id="password"
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
+                  {...register('password', { required: true })}
                   autoComplete="new-password"
                 />
+                {errors.password && <ErrorText>Este campo é obrigatório</ErrorText>}
               </Grid>
-              {/* <Grid item xs={12}>
-                <FormControlLabel
-                  control={<Checkbox value="allowExtraEmails" color="primary" />}
-                  label="I want to receive inspiration, marketing promotions and updates via email."
-                />
-              </Grid> */}
             </Grid>
+            {errorLogin ? (<Alert severity="error">{errorLogin}</Alert>) : false}
             <LoadingButton
               loading={loading}
               type="submit"
               fullWidth
               variant="contained"
-              sx={{ mt: 3, mb: 2 }}
+              sx={{
+                mt: 3, mb: 2, backgroundColor: '#49479D', "&:hover": {
+                  backgroundColor: '#003641',
+                },
+              }}
             >
               Entrar
             </LoadingButton>

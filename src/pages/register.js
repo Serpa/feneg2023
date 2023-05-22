@@ -1,3 +1,5 @@
+import React, { useState } from 'react';
+import { useForm } from 'react-hook-form';
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
@@ -5,62 +7,72 @@ import TextField from '@mui/material/TextField';
 import Link from '@mui/material/Link';
 import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
-import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import InputMask from 'react-input-mask';
-import { useState, useRef } from 'react';
 import axios from 'axios';
-import Copyright from '../components/copyright'
-import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
-import { app } from '../utils/firebase'
+import { getStorage, ref, uploadBytes, getDownloadURL } from 'firebase/storage';
+import { app } from '../utils/firebase';
 import { signIn } from 'next-auth/react';
 import { useRouter } from 'next/router';
 import LoadingButton from '@mui/lab/LoadingButton';
+import Copyright from '../components/copyright'
+import { Alert } from '@mui/material';
+import Image from 'next/image';
+import Head from 'next/head';
 
 const storage = getStorage(app);
 
 const defaultTheme = createTheme();
 
 export default function SignUp() {
-  const [name, setName] = useState('');
-  const [phone, setPhone] = useState('');
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const { register, handleSubmit, formState: { errors } } = useForm();
   const [selectedImage, setSelectedImage] = useState(null);
+  const [imgError, setImgError] = useState(false);
+  const [emailError, setEmailError] = useState(false);
+  const [phoneError, setPhoneError] = useState(false);
   const [previewImage, setPreviewImage] = useState(null);
-  const [loading, setLoading] = useState(false)
+  const [loading, setLoading] = useState(false);
   const router = useRouter();
 
-  const handleSubmit = async (event) => {
-    setLoading(false)
-    event.preventDefault();
-    if (name.length < 3 || phone.length < 11 || email.length < 5 || password.length < 6) {
-      return false
-    } else {
-      console.log(name, phone, email, password);
-      const user = await axios.post('/api/register', {
-        name, phone, email, password
-      })
-      const fileRef = ref(storage, `avatars/${user.data.id}.jpg`);
-      await uploadBytes(fileRef, selectedImage)
-      const photo_url = await getDownloadURL(fileRef);
-      const userWithPhoto = await axios.post('/api/register/photo', {
-        id: user.data.id,
-        photo: photo_url
-      })
-      const auth = await signIn("credentials", {
-        email: email,
-        password: password,
-        callbackUrl: "/",
-        redirect: false,
-      })
-      if (auth.ok) {
-        router.push(auth.url);
+  const onSubmit = async (data) => {
+    selectedImage ? setImgError(false) : setImgError(true);
+    setEmailError(false)
+    setPhoneError(false)
+    setLoading(true);
+    if (selectedImage && data.name && data.phone && data.email && data.password) {
+      try {
+        const user = await axios.post('/api/register', data);
+        const fileRef = ref(storage, `avatars/${user.data.id}.jpg`);
+        await uploadBytes(fileRef, selectedImage);
+        const photo_url = await getDownloadURL(fileRef);
+        const userWithPhoto = await axios.post('/api/register/photo', {
+          id: user.data.id,
+          photo: photo_url,
+        });
+        const auth = await signIn('credentials', {
+          email: data.email,
+          password: data.password,
+          callbackUrl: '/',
+          redirect: false,
+        });
+        if (auth.ok) {
+          router.push(auth.url);
+        }
+      } catch (error) {
+        if (error.response.data.message.meta.target === 'User_email_key') {
+          setEmailError(true)
+        }
+        if (error.response.data.message.meta.target === 'User_phone_key') {
+          setPhoneError(true)
+        }
+        setLoading(false);
+        console.log(error);
       }
+    } else {
+      setLoading(false);
     }
-    setLoading(false)
   };
 
   const handleFileChange = (event) => {
@@ -69,14 +81,18 @@ export default function SignUp() {
       setSelectedImage(file);
       const previewURL = URL.createObjectURL(file);
       setPreviewImage(previewURL);
+      setImgError(false);
     } else {
-      return null
+      setSelectedImage(null);
+      setPreviewImage(null);
     }
-
   };
 
   return (
     <ThemeProvider theme={defaultTheme}>
+      <Head>
+        <title>Registro - FENEG 2023 - Sicoob Frutal</title>
+      </Head>
       <Container component="main" maxWidth="xs">
         <CssBaseline />
         <Box
@@ -87,13 +103,11 @@ export default function SignUp() {
             alignItems: 'center',
           }}
         >
-          <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
-            <LockOutlinedIcon />
-          </Avatar>
+          <Image width={50} height={50} src={require('../../public/sicoob.png')} />
           <Typography component="h1" variant="h5">
             Cadastrar
           </Typography>
-          <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 3 }}>
+          <Box component="form" noValidate onSubmit={handleSubmit(onSubmit)} sx={{ mt: 3 }}>
             <Grid container spacing={2}>
               <Grid item xs={12} sx={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center' }}>
                 <label htmlFor="upload-photo" style={{ padding: 10 }}>
@@ -103,16 +117,19 @@ export default function SignUp() {
                     name="upload-photo"
                     type="file" accept="image/png, image/gif, image/jpeg" onChange={handleFileChange}
                   />
-                  <Button color="action" variant="contained" component="span">
+                  <Button component="span" variant="contained"
+                    sx={{
+                      mt: 3, mb: 2, backgroundColor: '#49479D', "&:hover": {
+                        backgroundColor: '#003641',
+                      },
+                    }}>
                     Selecionar Foto
                   </Button>
                 </label>
-                {/* <Input type="file" accept="image/png, image/gif, image/jpeg" onChange={handleFileChange} /> */}
-                {selectedImage ? (<Avatar
-                  alt="Remy Sharp"
-                  src={previewImage}
-                  sx={{ width: 250, height: 250 }}
-                />) : false}
+                {imgError ? (<Alert severity="error">É obrigatório uma foto de perfil</Alert>) : ''}
+                {selectedImage && (
+                  <Avatar alt="Remy Sharp" src={previewImage} sx={{ width: 250, height: 250 }} />
+                )}
               </Grid>
               <Grid item xs={12}>
                 <TextField
@@ -123,25 +140,31 @@ export default function SignUp() {
                   id="name"
                   label="Nome"
                   autoFocus
-                  value={name}
-                  onChange={(e) => setName(e.target.value)}
+                  {...register('name', { required: 'Este campo é obrigatório' })}
+                  error={!!errors.name}
+                  helperText={errors.name?.message}
                 />
               </Grid>
               <Grid item xs={12}>
                 <InputMask
                   mask="(99) 9 9999-9999"
                   disabled={false}
-                  value={phone}
-                  onChange={(e) => setPhone(e.target.value)}
+                  {...register('phone', { required: 'Este campo é obrigatório' })}
                   maskChar=" "
                 >
-                  {() => <TextField required
-                    fullWidth
-                    name="phone"
-                    label="Celular"
-                    type="text"
-                    id="phone"
-                    autoComplete="phone" />}
+                  {() => (
+                    <TextField
+                      required
+                      fullWidth
+                      name="phone"
+                      label="Celular"
+                      type="text"
+                      id="phone"
+                      autoComplete="phone"
+                      error={!!errors.phone || phoneError}
+                      helperText={phoneError ? 'Celular já cadastrado' : errors.phone?.message}
+                    />
+                  )}
                 </InputMask>
               </Grid>
               <Grid item xs={12}>
@@ -152,8 +175,15 @@ export default function SignUp() {
                   label="E-mail"
                   name="email"
                   autoComplete="email"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
+                  {...register('email', {
+                    required: 'Este campo é obrigatório',
+                    pattern: {
+                      value: /\S+@\S+\.\S+/,
+                      message: 'Endereço de e-mail inválido',
+                    },
+                  })}
+                  error={!!errors.email || emailError}
+                  helperText={emailError ? 'E-mail já cadastrado' : errors.email?.message}
                 />
               </Grid>
               <Grid item xs={12}>
@@ -165,8 +195,9 @@ export default function SignUp() {
                   type="password"
                   id="password"
                   autoComplete="new-password"
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
+                  {...register('password', { required: 'Este campo é obrigatório', minLength: 6 })}
+                  error={!!errors.password}
+                  helperText={errors.password?.message}
                 />
               </Grid>
             </Grid>
@@ -175,13 +206,17 @@ export default function SignUp() {
               type="submit"
               fullWidth
               variant="contained"
-              sx={{ mt: 3, mb: 2 }}
+              sx={{
+                mt: 3, mb: 2, backgroundColor: '#49479D', "&:hover": {
+                  backgroundColor: '#003641',
+                },
+              }}
             >
               Cadastrar
             </LoadingButton>
             <Grid container justifyContent="flex-end">
               <Grid item>
-                <Link href="#" variant="body2">
+                <Link href="/login" variant="body2">
                   Já tem uma conta? Clique aqui
                 </Link>
               </Grid>
@@ -189,7 +224,7 @@ export default function SignUp() {
           </Box>
         </Box>
         <Copyright sx={{ mt: 5 }} />
-      </Container >
-    </ThemeProvider >
+      </Container>
+    </ThemeProvider>
   );
 }

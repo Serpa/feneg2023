@@ -1,11 +1,15 @@
 import { Copyright } from '@mui/icons-material'
 import { Container, Grid, Paper } from '@mui/material'
 import Layout from '../components/layout'
+import Head from 'next/head'
 
 export default function index() {
 
   return (
     <Layout>
+      <Head>
+        <title>HOME - FENEG 2023 - Sicoob Frutal</title>
+      </Head>
       <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
         <Grid container spacing={3}>
           {/* Chart */}

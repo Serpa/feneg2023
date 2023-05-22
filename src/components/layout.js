@@ -97,6 +97,7 @@ export default function Dashboard(props) {
                     <Toolbar
                         sx={{
                             pr: '24px',
+                            backgroundColor: '#003641'
                         }}
                     >
                         <IconButton
@@ -118,7 +119,7 @@ export default function Dashboard(props) {
                             noWrap
                             sx={{ flexGrow: 1 }}
                         >
-                            Dashboard
+                            FENEG 2023
                         </Typography>
                         <IconButton color="inherit" onClick={() => signOut()}>
                             <Typography sx={{ mr: 5 }}>
@@ -128,7 +129,7 @@ export default function Dashboard(props) {
                         </IconButton>
                     </Toolbar>
                 </AppBar>
-                <Drawer variant="permanent" open={open}>
+                <Drawer variant="permanent" open={open} >
                     <Toolbar
                         sx={{
                             display: 'flex',
