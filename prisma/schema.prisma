@@ -57,6 +57,7 @@ model User {
   password      String
   emailVerified DateTime?
   image         String?
+  adm           Boolean?
   accounts      Account[]
   sessions      Session[]
   Presenca      Presenca[]
