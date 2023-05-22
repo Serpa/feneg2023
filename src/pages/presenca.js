@@ -4,7 +4,7 @@ import { useZxing } from "react-zxing";
 import { useState } from 'react';
 import { Container, CardMedia } from '@mui/material';
 
-export default function presenca() {
+export default function Presenca() {
     const [result, setResult] = useState("");
     const { ref } = useZxing({
         onResult(result) {
