@@ -7,11 +7,10 @@ export default withAuth(
         callbacks: {
             authorized: ({ token, req }) => {
                 if (token) { return true; }
-                // else if (req.cookies) return true;
                 return false;
             },
         }
     }
 
 );
-export const config = { matcher: ["/", "/presenca", "/profile"] };
+export const config = { matcher: ["/", "/presenca", "/profile","/adm/:path*"] };

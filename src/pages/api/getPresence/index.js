@@ -31,5 +31,4 @@ export default async function getPresence(req, res) {
         res.status(401)
     }
     res.end()
-
 }

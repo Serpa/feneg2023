@@ -37,10 +37,10 @@ export default function Presenca() {
             <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
                 {/* {router.query.id} */}
                 <video style={{ maxWidth: '100%' }} ref={ref} />
-                <p>
+                {/* <p>
                     <span>Last result:</span>
                     <span>{result}</span>
-                </p>
+                </p> */}
                 <Dialog
                     fullScreen={fullScreen}
                     open={open}
@@ -48,20 +48,19 @@ export default function Presenca() {
                     aria-labelledby="responsive-dialog-title"
                 >
                     <DialogTitle id="responsive-dialog-title">
-                        {"Use Google's location service?"}
+                        {"Confirmar Presença?"}
                     </DialogTitle>
                     <DialogContent>
                         <DialogContentText>
-                            Let Google help apps determine location. This means sending anonymous
-                            location data to Google, even when no apps are running.
+                            {result}
                         </DialogContentText>
                     </DialogContent>
                     <DialogActions>
                         <Button autoFocus onClick={handleClose}>
-                            Disagree
+                            Cancelar
                         </Button>
                         <Button onClick={handleClose} autoFocus>
-                            Agree
+                            Confirmar
                         </Button>
                     </DialogActions>
                 </Dialog>

@@ -8,30 +8,15 @@ import List from '@mui/material/List';
 import Typography from '@mui/material/Typography';
 import Divider from '@mui/material/Divider';
 import IconButton from '@mui/material/IconButton';
-import Container from '@mui/material/Container';
-import Grid from '@mui/material/Grid';
-import Paper from '@mui/material/Paper';
 import Link from '@mui/material/Link';
 import MenuIcon from '@mui/icons-material/Menu';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import { mainListItems, secondaryListItems } from '../components/listItems';
 import { Avatar } from '@mui/material';
 import { useSession, signIn, signOut } from "next-auth/react";
-import { useZxing } from "react-zxing";
 import { useState } from 'react';
-
-function Copyright(props) {
-    return (
-        <Typography variant="body2" color="text.secondary" align="center" {...props}>
-            {'Copyright © '}
-            <Link color="inherit" href="https://mui.com/">
-                Your Website
-            </Link>{' '}
-            {new Date().getFullYear()}
-            {'.'}
-        </Typography>
-    );
-}
+import Menu from '@mui/material/Menu';
+import MenuItem from '@mui/material/MenuItem';
 
 const drawerWidth = 240;
 
@@ -83,7 +68,16 @@ const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' 
 const defaultTheme = createTheme();
 
 export default function Dashboard(props) {
+    const [anchorEl, setAnchorEl] = useState(null);
+    const openMenu = Boolean(anchorEl);
     const [open, setOpen] = useState(false);
+
+    const handleClick = (event) => {
+        setAnchorEl(event.currentTarget);
+    };
+    const handleClose = () => {
+        setAnchorEl(null);
+    };
 
     const toggleDrawer = () => {
         setOpen(!open);
@@ -118,15 +112,32 @@ export default function Dashboard(props) {
                             color="inherit"
                             noWrap
                             sx={{ flexGrow: 1 }}
+
                         >
-                            FENEG 2023
+                            <Link href='/' style={{ textDecoration: 'none', color: '#ffffff' }}>FENEG 2023</Link>
                         </Typography>
-                        <IconButton color="inherit" onClick={() => signOut()}>
+                        <IconButton color="inherit" aria-controls={open ? 'basic-menu' : undefined}
+                            aria-haspopup="true"
+                            aria-expanded={open ? 'true' : undefined}
+                            onClick={handleClick}>
                             <Typography sx={{ mr: 5 }}>
                                 {session?.user.name}
                             </Typography>
                             <Avatar alt={session?.user.name} src={session?.user.image} />
                         </IconButton>
+                        <Menu
+                            id="basic-menu"
+                            anchorEl={anchorEl}
+                            open={openMenu}
+                            onClose={handleClose}
+                            MenuListProps={{
+                                'aria-labelledby': 'basic-button',
+                            }}
+                        >
+                            <MenuItem onClick={handleClose}>Profile</MenuItem>
+                            <MenuItem onClick={handleClose}>My account</MenuItem>
+                            <MenuItem onClick={() => signOut()}>Logout</MenuItem>
+                        </Menu>
                     </Toolbar>
                 </AppBar>
                 <Drawer variant="permanent" open={open} >
@@ -146,7 +157,7 @@ export default function Dashboard(props) {
                     <List component="nav">
                         {mainListItems}
                         <Divider sx={{ my: 1 }} />
-                        {secondaryListItems}
+                        {session?.user.adm ? secondaryListItems : false}
                     </List>
                 </Drawer>
                 <Box

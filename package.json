@@ -29,7 +29,10 @@
     "react-dom": "18.2.0",
     "react-hook-form": "^7.43.9",
     "react-input-mask": "^2.0.4",
-    "react-zxing": "^1.1.4"
+    "react-qr-code": "^2.0.11",
+    "react-to-print": "^2.14.12",
+    "react-zxing": "^1.1.4",
+    "swr": "^2.1.5"
   },
   "devDependencies": {
     "prisma": "^4.14.1"

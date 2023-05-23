@@ -2,17 +2,12 @@ import * as React from 'react';
 import ListItemButton from '@mui/material/ListItemButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
-import ListSubheader from '@mui/material/ListSubheader';
-import DashboardIcon from '@mui/icons-material/Dashboard';
-import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
-import PeopleIcon from '@mui/icons-material/People';
-import BarChartIcon from '@mui/icons-material/BarChart';
-import LayersIcon from '@mui/icons-material/Layers';
-import AssignmentIcon from '@mui/icons-material/Assignment';
 import HomeIcon from '@mui/icons-material/Home';
 import ConfirmationNumberIcon from '@mui/icons-material/ConfirmationNumber';
 import ManageAccountsIcon from '@mui/icons-material/ManageAccounts';
 import Link from 'next/link';
+import QrCode2Icon from '@mui/icons-material/QrCode2';
+import AssuredWorkloadIcon from '@mui/icons-material/AssuredWorkload';
 
 
 export const mainListItems = (
@@ -37,7 +32,7 @@ export const mainListItems = (
     }}>
       <ListItemButton>
         <ListItemIcon>
-          <ConfirmationNumberIcon />
+          <QrCode2Icon />
         </ListItemIcon>
         <ListItemText primary="Presença" />
       </ListItemButton>
@@ -61,26 +56,31 @@ export const mainListItems = (
 
 export const secondaryListItems = (
   <React.Fragment>
-    {/* <ListSubheader component="div" inset>
-      Saved reports
-    </ListSubheader>
-    <ListItemButton>
-      <ListItemIcon>
-        <AssignmentIcon />
-      </ListItemIcon>
-      <ListItemText primary="Current month" />
-    </ListItemButton>
-    <ListItemButton>
-      <ListItemIcon>
-        <AssignmentIcon />
-      </ListItemIcon>
-      <ListItemText primary="Last quarter" />
-    </ListItemButton>
-    <ListItemButton>
-      <ListItemIcon>
-        <AssignmentIcon />
-      </ListItemIcon>
-      <ListItemText primary="Year-end sale" />
-    </ListItemButton> */}
+
+    <Link href="/adm" style={{
+      textDecoration: 'none',
+      color: 'black',
+      fontSize: 30,
+    }}>
+      <ListItemButton>
+        <ListItemIcon>
+          <AssuredWorkloadIcon />
+        </ListItemIcon>
+        <ListItemText primary="Cadastrar QrCode" />
+      </ListItemButton>
+    </Link>
+
+    <Link href="/adm/listaqr" style={{
+      textDecoration: 'none',
+      color: 'black',
+      fontSize: 30,
+    }}>
+      <ListItemButton>
+        <ListItemIcon>
+          <QrCode2Icon />
+        </ListItemIcon>
+        <ListItemText primary="Listar QrCodes" />
+      </ListItemButton>
+    </Link>
   </React.Fragment>
 );
