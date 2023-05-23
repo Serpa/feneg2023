@@ -42,7 +42,10 @@ export const authOptions = {
             session.user = token.user;
             return session
         },
-        async jwt({ token, user, account }) {
+        async jwt({ token, trigger, user, account, session }) {
+            if (trigger === "update" && session?.name) {
+                token.user = session
+            }
             if (typeof user !== typeof undefined) {
                 token.user = user;
             }

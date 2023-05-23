@@ -3,7 +3,6 @@ import { useForm } from 'react-hook-form';
 import { signIn } from 'next-auth/react';
 import { useRouter } from 'next/router';
 import {
-  Avatar,
   Box,
   Container,
   CssBaseline,
@@ -13,7 +12,6 @@ import {
   Typography,
   createTheme,
   ThemeProvider,
-  fabClasses,
   Alert,
 } from '@mui/material';
 import LoadingButton from '@mui/lab/LoadingButton';

@@ -17,6 +17,7 @@ export default function ListaQr() {
     if (error) return <div>Erro ao carregar!</div>
     if (isLoading) return <Layout><CircularProgress /></Layout>
     const cards = data.map(card => {
+        console.log(card);
         return (
             <Grid item xs={12} md={8} lg={4} key={card.id}>
                 <Paper
@@ -40,7 +41,7 @@ export default function ListaQr() {
             <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
                 <ReactToPrint
                     trigger={() => (
-                        <Button sx={{m:5}} variant="contained" endIcon={<PrintIcon />}>
+                        <Button sx={{ m: 5 }} variant="contained" endIcon={<PrintIcon />}>
                             Imprimir
                         </Button>
                     )}

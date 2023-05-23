@@ -17,6 +17,7 @@ import { useSession, signIn, signOut } from "next-auth/react";
 import { useState } from 'react';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
+import { useRouter } from 'next/router';
 
 const drawerWidth = 240;
 
@@ -71,6 +72,7 @@ export default function Dashboard(props) {
     const [anchorEl, setAnchorEl] = useState(null);
     const openMenu = Boolean(anchorEl);
     const [open, setOpen] = useState(false);
+    const router = useRouter();
 
     const handleClick = (event) => {
         setAnchorEl(event.currentTarget);
@@ -134,8 +136,8 @@ export default function Dashboard(props) {
                                 'aria-labelledby': 'basic-button',
                             }}
                         >
-                            <MenuItem onClick={handleClose}>Profile</MenuItem>
-                            <MenuItem onClick={handleClose}>My account</MenuItem>
+                            <MenuItem onClick={() => router.push('/profile/')}>Perfil</MenuItem>
+                            <MenuItem onClick={() => router.push('/profile/update')}>Minha conta</MenuItem>
                             <MenuItem onClick={() => signOut()}>Logout</MenuItem>
                         </Menu>
                     </Toolbar>

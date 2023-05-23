@@ -4,7 +4,6 @@ const saltRounds = 10;
 
 export default async function Register(req, res) {
     const { name, phone, email, password } = req.body
-    console.log(phone);
     const passwordHash = await bcrypt.hash(password, 10)
     try {
         const user = await prisma.User.create({

@@ -1,9 +1,9 @@
 import { Copyright } from '@mui/icons-material'
 import { Container, Grid, Paper } from '@mui/material'
-import Layout from '../components/layout'
+import Layout from '../../components/layout'
 import Head from 'next/head'
 
-export default function Profile() {
+export default function User() {
 
   return (
     <Layout>
