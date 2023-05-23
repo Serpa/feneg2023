@@ -113,9 +113,6 @@ export default function ListaQr() {
                             Imprimir
                         </Button>
                     )}
-                    onBeforeGetContent={() => {
-                        setHiddenButton(true)
-                    }}
                     content={() => qrCodeRef.current}
                 />
                 <Button sx={{ m: 1 }} fullWidth variant="contained" endIcon={hiddenButton ? (<VisibilityIcon />) : (<VisibilityOffIcon />)} onClick={() => {

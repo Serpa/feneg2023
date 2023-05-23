@@ -103,7 +103,7 @@ export default function SignUp() {
             alignItems: 'center',
           }}
         >
-          <Image width={50} height={50} src={require('../../public/sicoob.png')} />
+          <Image alt='Sicoob Logo' width={50} height={50} src={require('../../public/sicoob.png')} />
           <Typography component="h1" variant="h5">
             Cadastrar
           </Typography>
