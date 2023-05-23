@@ -15,8 +15,8 @@ export default function Adm() {
     const [loading, setLoading] = useState(false);
     const [errorStage, seterrorStage] = useState('');
     const [msg, setMsg] = useState('');
-    const { data, error, isLoading } = useSWR('/api/stage/getStage', fetcher)
     const [snackbars, setSnackbars] = useState(false);
+    const { data, error, isLoading } = useSWR('/api/stage/getStage', fetcher)
 
     const handleClick = () => {
         setSnackbars(true);

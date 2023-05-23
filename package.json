@@ -33,7 +33,8 @@
     "react-qr-code": "^2.0.11",
     "react-to-print": "^2.14.12",
     "react-zxing": "^1.1.4",
-    "swr": "^2.1.5"
+    "swr": "^2.1.5",
+    "xlsx": "https://cdn.sheetjs.com/xlsx-0.19.3/xlsx-0.19.3.tgz"
   },
   "devDependencies": {
     "prisma": "^4.14.1"
