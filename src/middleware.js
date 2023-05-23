@@ -1,11 +1,15 @@
 import { withAuth } from "next-auth/middleware";
+import { NextResponse } from "next/server";
 
 export default withAuth(
-    function middleware(req) {
-    },
     {
         callbacks: {
             authorized: ({ token, req }) => {
+                const path = req.nextUrl.pathname;
+                if (path.startsWith("/adm")) {
+                    console.log('teste');
+                    return token?.adm ? token?.adm : NextResponse.redirect(req.url.replace(path, ''));
+                }
                 if (token) { return true; }
                 return false;
             },
@@ -13,4 +17,4 @@ export default withAuth(
     }
 
 );
-export const config = { matcher: ["/", "/presenca", "/profile","/adm/:path*"] };
+export const config = { matcher: ["/", "/presenca", "/profile", "/adm/:path*"] };

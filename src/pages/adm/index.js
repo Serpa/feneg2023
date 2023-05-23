@@ -2,11 +2,8 @@ import { Copyright } from '@mui/icons-material'
 import { Alert, Box, CircularProgress, Container, Grid, Paper, Snackbar, TextField } from '@mui/material'
 import Layout from '@/components/layout'
 import Head from 'next/head'
-import QrCode from '@/components/card'
 import axios from 'axios'
 import useSWR from 'swr'
-import { getServerSession } from "next-auth/next"
-import { authOptions } from "@/pages/api/auth/[...nextauth]"
 import { LoadingButton } from '@mui/lab'
 import { useForm } from 'react-hook-form';
 import { useState } from 'react'
@@ -107,23 +104,3 @@ export default function Adm() {
     )
 }
 
-export async function getServerSideProps(context) {
-    const session = await getServerSession(
-        context.req,
-        context.res,
-        authOptions
-    )
-    if (!session.user.adm) {
-        return {
-            redirect: {
-                permanent: false,
-                destination: "/",
-            },
-        }
-    }
-    return {
-        props: {
-            session,
-        },
-    }
-}

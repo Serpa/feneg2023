@@ -7,8 +7,6 @@ import ReactToPrint from 'react-to-print';
 import { useRef } from 'react'
 import axios from 'axios'
 import useSWR from 'swr'
-import { getServerSession } from "next-auth/next"
-import { authOptions } from "@/pages/api/auth/[...nextauth]"
 import PrintIcon from '@mui/icons-material/Print';
 
 const fetcher = url => axios.get(url).then(res => res.data)
@@ -55,25 +53,4 @@ export default function ListaQr() {
             </Container>
         </Layout>
     )
-}
-
-export async function getServerSideProps(context) {
-    const session = await getServerSession(
-        context.req,
-        context.res,
-        authOptions
-    )
-    if (!session.user.adm) {
-        return {
-            redirect: {
-                permanent: false,
-                destination: "/",
-            },
-        }
-    }
-    return {
-        props: {
-            session,
-        },
-    }
 }
