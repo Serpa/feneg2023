@@ -52,8 +52,7 @@ export default function ListaQr() {
                     email: presence.user.email,
                     telefone: presence.user.phone,
                     data: dayjs(presence.data).format('DD/MM/YYYY HH:mm:ss'),
-                    local: presence.stage.name,
-                    foto: presence.user.image,
+                    local: presence.stage.name
                 }
             })
             const worksheet = XLSX.utils.json_to_sheet(dataUpdate);
@@ -74,8 +73,7 @@ export default function ListaQr() {
                     email: presence.user.email,
                     telefone: presence.user.phone,
                     data: dayjs(presence.data).format('DD/MM/YYYY HH:mm:ss'),
-                    local: presence.stage.name,
-                    foto: presence.user.image,
+                    local: presence.stage.name
                 }
             })
             const worksheet = XLSX.utils.json_to_sheet(dataUpdate);
