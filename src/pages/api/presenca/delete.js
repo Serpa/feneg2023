@@ -2,14 +2,13 @@ import prisma from '../../../utils/prismadb'
 import { getServerSession } from "next-auth/next"
 import { authOptions } from "../auth/[...nextauth]"
 
-export default async function deleteStage(req, res) {
+export default async function RegisterStage(req, res) {
     const session = await getServerSession(req, res, authOptions)
     if (session) {
         if (req.method === 'POST') {
             const { id } = req.body
-            console.log(req.body);
             try {
-                const stage = await prisma.Stage.delete({
+                const stage = await prisma.Presenca.delete({
                     where: {
                         id
                     }

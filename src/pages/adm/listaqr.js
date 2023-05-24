@@ -14,6 +14,7 @@ import VisibilityIcon from '@mui/icons-material/Visibility';
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 import dayjs from 'dayjs'
 import * as XLSX from "xlsx";
+import CoPresentIcon from '@mui/icons-material/CoPresent';
 
 const fetcher = url => axios.get(url).then(res => res.data)
 
@@ -52,6 +53,28 @@ export default function ListaQr() {
             const workbook = XLSX.utils.book_new();
             XLSX.utils.book_append_sheet(workbook, worksheet, name);
             XLSX.writeFile(workbook, `${name}.xlsx`, { compression: true });
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
+    const handleListAll = async () => {
+        try {
+            const list = await axios.post('/api/getPresence/all')
+            let dataUpdate = list.data.map(presence => {
+                return {
+                    nome: presence.user.name,
+                    email: presence.user.email,
+                    telefone: presence.user.phone,
+                    data: dayjs(presence.data).format('DD/MM/YYYY HH:mm:ss'),
+                    local: presence.stage.name,
+                    foto: presence.user.image,
+                }
+            })
+            const worksheet = XLSX.utils.json_to_sheet(dataUpdate);
+            const workbook = XLSX.utils.book_new();
+            XLSX.utils.book_append_sheet(workbook, worksheet, Geral);
+            XLSX.writeFile(workbook, `Geral.xlsx`, { compression: true });
         } catch (error) {
             console.log(error);
         }
@@ -115,6 +138,7 @@ export default function ListaQr() {
                     )}
                     content={() => qrCodeRef.current}
                 />
+                <Button sx={{ m: 1 }} variant="contained" fullWidth endIcon={<CoPresentIcon />} onClick={handleListAll}>Lista de Presença Geral</Button>
                 <Button sx={{ m: 1 }} fullWidth variant="contained" endIcon={hiddenButton ? (<VisibilityIcon />) : (<VisibilityOffIcon />)} onClick={() => {
                     setHiddenButton(!hiddenButton)
                 }}>

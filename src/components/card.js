@@ -5,11 +5,13 @@ import CardMedia from '@mui/material/CardMedia';
 import Typography from '@mui/material/Typography';
 import { CardActionArea } from '@mui/material';
 import QRCode from 'react-qr-code';
+import { useRouter } from 'next/router';
 
 export default function QrCode(props) {
+    const router = useRouter();
     return (
         <Card sx={{ maxWidth: 345, width: '100%', height: '100%' }}>
-            <CardActionArea>
+            <CardActionArea onClick={() => router.push(`/adm/presence/${props.qrcode}`)}>
                 <QRCode
                     size={256}
                     style={{ height: "auto", maxWidth: "100%", width: "100%" }}

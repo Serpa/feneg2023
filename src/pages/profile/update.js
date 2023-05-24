@@ -54,13 +54,11 @@ export default function SignUp() {
             ...data,
             image: photo_url
           });
-          console.log(userUpdate);
         }
         const userUpdate = await axios.post('/api/update/profile', {
           ...data,
           image: session.user.image
         });
-        console.log(userUpdate);
         if (userUpdate.status === 200) {
           setLoading(false);
           update(userUpdate.data)
