@@ -7,6 +7,7 @@ import useSWR from 'swr'
 import { LoadingButton } from '@mui/lab'
 import { useForm } from 'react-hook-form';
 import { useState } from 'react'
+import { useSession } from 'next-auth/react'
 
 const fetcher = url => axios.get(url).then(res => res.data)
 
@@ -17,6 +18,10 @@ export default function Adm() {
     const [msg, setMsg] = useState('');
     const [snackbars, setSnackbars] = useState(false);
     const { data, error, isLoading } = useSWR('/api/stage/getStage', fetcher)
+    const { data: session, status } = useSession()
+    if (!session?.user.adm) {
+        return "not authenticated..."
+    }
 
     const handleClick = () => {
         setSnackbars(true);

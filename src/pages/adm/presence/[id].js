@@ -14,6 +14,7 @@ import VisibilityIcon from '@mui/icons-material/Visibility';
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 import { useRouter } from 'next/router';
 import dayjs from 'dayjs'
+import { useSession } from 'next-auth/react'
 
 const fetcher = url => axios.get(url).then(res => res.data)
 
@@ -28,6 +29,10 @@ export default function PresenceAdm() {
     const [snackbars, setSnackbars] = useState(false);
     const [msg, setMsg] = useState('');
     const { data, error, isLoading } = useSWR(`/api/stage/presenceStage/${router.query.id}`, fetcher, { refreshInterval: 1000 })
+    const { data: session, status } = useSession()
+    if (!session?.user.adm) {
+        return "not authenticated..."
+    }
     if (error) return <div>Erro ao carregar!</div>
     if (isLoading) return <Layout><CircularProgress /></Layout>
 

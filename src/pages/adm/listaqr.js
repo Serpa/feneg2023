@@ -15,6 +15,8 @@ import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 import dayjs from 'dayjs'
 import * as XLSX from "xlsx";
 import CoPresentIcon from '@mui/icons-material/CoPresent';
+import { useSession } from 'next-auth/react'
+import { useRouter } from 'next/router'
 
 const fetcher = url => axios.get(url).then(res => res.data)
 
@@ -27,7 +29,12 @@ export default function ListaQr() {
     const [hiddenButton, setHiddenButton] = useState(false)
     const [snackbars, setSnackbars] = useState(false);
     const [msg, setMsg] = useState('');
+    const router = useRouter();
     const { data, error, isLoading } = useSWR('/api/stage/getStage', fetcher, { refreshInterval: 1000 })
+    const { data: session, status } = useSession()
+    if (!session?.user.adm) {
+        return "not authenticated..."
+    }
     if (error) return <div>Erro ao carregar!</div>
     if (isLoading) return <Layout><CircularProgress /></Layout>
 
@@ -73,7 +80,7 @@ export default function ListaQr() {
             })
             const worksheet = XLSX.utils.json_to_sheet(dataUpdate);
             const workbook = XLSX.utils.book_new();
-            XLSX.utils.book_append_sheet(workbook, worksheet, Geral);
+            XLSX.utils.book_append_sheet(workbook, worksheet, 'Geral');
             XLSX.writeFile(workbook, `Geral.xlsx`, { compression: true });
         } catch (error) {
             console.log(error);
