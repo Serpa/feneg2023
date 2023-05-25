@@ -63,7 +63,7 @@ export default async function getPresenceCount(req, res) {
                     data: {
                         userId: filteredArray[random],
                         data: new Date(),
-                        dia: dayOnly.toDate(),
+                        dia: dayOnly.add(3, 'h').toDate(),
                     }
                 })
 
