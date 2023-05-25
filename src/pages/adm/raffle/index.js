@@ -36,7 +36,8 @@ export default function Adm() {
 
     const dias = datasPresente.map(dia => {
         const diaFormated = dayjs(dia.dia).utc().format('DD/MM/YYYY')
-        getWinnerByDay(dia.dia)
+        const day = dayjs(dia.dia);
+        getWinnerByDay(day)
         return (
             <Grid item xs={12} md={8} lg={4} key={dia.dia}>
                 <Button onClick={() => handleRaffle(dia.dia)}>{diaFormated}</Button>

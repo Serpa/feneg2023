@@ -6,12 +6,13 @@ import dayjs from 'dayjs'
 export default async function getWinners(req, res) {
     const session = await getServerSession(req, res, authOptions)
     const { dia } = req.body
-    const day = dayjs(dia);
+    const day = dayjs(dia,'DD/MM/YYYY');
+    console.log(day);
     if (session) {
         try {
             const winners = await prisma.Winners.findMany({
                 where: {
-                    dia: day,
+                    dia: day.toDate(),
                 },
                 include: {
                     user: true

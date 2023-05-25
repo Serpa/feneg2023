@@ -7,6 +7,7 @@ export default async function getPresenceCount(req, res) {
     const { dia } = req.body
     const session = await getServerSession(req, res, authOptions)
     const day = dayjs(dia);
+    const dayOnly = dayjs(new Date().toDateString())
     if (session) {
         try {
             const presenceCount = await prisma.Presenca.groupBy({
@@ -62,7 +63,7 @@ export default async function getPresenceCount(req, res) {
                     data: {
                         userId: filteredArray[random],
                         data: new Date(),
-                        dia: new Date(new Date().toDateString()),
+                        dia: dayOnly.toDate(),
                     }
                 })
 
