@@ -44,10 +44,18 @@ model Presenca {
   id      String   @id @default(auto()) @map("_id") @db.ObjectId
   userId  String   @db.ObjectId
   data    DateTime
-  dia    DateTime
+  dia     DateTime
   stageId String   @db.ObjectId
   user    User     @relation(fields: [userId], references: [id], onDelete: Cascade)
   stage   Stage    @relation(fields: [stageId], references: [id], onDelete: Cascade)
+}
+
+model Winners {
+  id     String   @id @default(auto()) @map("_id") @db.ObjectId
+  userId String   @db.ObjectId
+  data   DateTime
+  dia    DateTime
+  user   User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 
 model User {
@@ -62,6 +70,7 @@ model User {
   accounts      Account[]
   sessions      Session[]
   Presenca      Presenca[]
+  Winners       Winners[]
 }
 
 model VerificationToken {

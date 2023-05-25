@@ -1,18 +1,23 @@
 import prisma from '../../../utils/prismadb'
 import { getServerSession } from "next-auth/next"
 import { authOptions } from "../auth/[...nextauth]"
+import dayjs from 'dayjs'
 
-export default async function getPresenceDate(req, res) {
+export default async function getWinners(req, res) {
     const session = await getServerSession(req, res, authOptions)
+    const { dia } = req.body
+    const day = dayjs(dia);
     if (session) {
         try {
-            const presenceDate = await prisma.Presenca.findMany({
-                distinct: ['dia'],
-                select: {
-                    dia: true
+            const winners = await prisma.Winners.findMany({
+                where: {
+                    dia: day,
+                },
+                include: {
+                    user: true
                 }
             });
-            res.status(200).json(presenceDate)
+            res.status(200).json(winners)
         } catch (error) {
             res.status(400).json({ message: error })
         }
