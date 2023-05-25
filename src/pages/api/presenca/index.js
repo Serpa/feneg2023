@@ -25,6 +25,7 @@ export default async function Presence(req, res) {
                     data: {
                         userId: session.user.id,
                         data: new Date(),
+                        dia: new Date(new Date().toDateString()),
                         stageId
                     }
                 });

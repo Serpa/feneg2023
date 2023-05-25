@@ -3,11 +3,11 @@ import ListItemButton from '@mui/material/ListItemButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import HomeIcon from '@mui/icons-material/Home';
-import ConfirmationNumberIcon from '@mui/icons-material/ConfirmationNumber';
 import ManageAccountsIcon from '@mui/icons-material/ManageAccounts';
 import Link from 'next/link';
 import QrCode2Icon from '@mui/icons-material/QrCode2';
 import AssuredWorkloadIcon from '@mui/icons-material/AssuredWorkload';
+import EmojiEventsIcon from '@mui/icons-material/EmojiEvents';
 
 
 export const mainListItems = (
@@ -80,6 +80,19 @@ export const secondaryListItems = (
           <QrCode2Icon />
         </ListItemIcon>
         <ListItemText primary="Listar QrCodes" />
+      </ListItemButton>
+    </Link>
+
+    <Link href="/adm/raffle" style={{
+      textDecoration: 'none',
+      color: 'black',
+      fontSize: 30,
+    }}>
+      <ListItemButton>
+        <ListItemIcon>
+          <EmojiEventsIcon />
+        </ListItemIcon>
+        <ListItemText primary="Sorteio" />
       </ListItemButton>
     </Link>
   </React.Fragment>

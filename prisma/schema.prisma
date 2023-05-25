@@ -44,6 +44,7 @@ model Presenca {
   id      String   @id @default(auto()) @map("_id") @db.ObjectId
   userId  String   @db.ObjectId
   data    DateTime
+  dia    DateTime
   stageId String   @db.ObjectId
   user    User     @relation(fields: [userId], references: [id], onDelete: Cascade)
   stage   Stage    @relation(fields: [stageId], references: [id], onDelete: Cascade)
