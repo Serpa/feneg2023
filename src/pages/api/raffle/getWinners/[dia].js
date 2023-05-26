@@ -13,13 +13,13 @@ export default async function getWinners(req, res) {
         try {
             const winners = await prisma.Winners.findMany({
                 where: {
-                    dia: day.toDate(),
+                    dia: day.add(3, 'h').toDate(),
                 },
                 include: {
                     user: true
                 }
             });
-            res.status(200).json({ ...winners, dia: dia, day: day })
+            res.status(200).json(winners)
         } catch (error) {
             res.status(400).json({ message: error })
         }
