@@ -1,13 +1,14 @@
-import prisma from '../../../utils/prismadb'
+import prisma from '../../../../utils/prismadb'
 import { getServerSession } from "next-auth/next"
-import { authOptions } from "../auth/[...nextauth]"
+import { authOptions } from "../../auth/[...nextauth]"
 import dayjs from 'dayjs'
+import customParseFormat from 'dayjs/plugin/customParseFormat'
+dayjs.extend(customParseFormat)
 
 export default async function getWinners(req, res) {
     const session = await getServerSession(req, res, authOptions)
-    const { dia } = req.body
-    const day = dayjs(dia,'DD/MM/YYYY');
-    console.log(day);
+    const { dia } = req.query
+    const day = dayjs(dia, 'DD-MM-YYYY');
     if (session) {
         try {
             const winners = await prisma.Winners.findMany({

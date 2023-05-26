@@ -8,14 +8,14 @@ import { LoadingButton } from '@mui/lab'
 import { useState } from 'react'
 import { useSession } from 'next-auth/react'
 import dayjs from 'dayjs'
-import utc from 'dayjs/plugin/utc'
-dayjs.extend(utc)
+import { useRouter } from 'next/router'
 
 const fetcher = url => axios.get(url).then(res => res.data)
 
 export default function Adm() {
     const { data: datasPresente, error: dateError, isLoading: loadingDate } = useSWR('/api/raffle/getPresenceDate', fetcher)
     const { data: session, status } = useSession()
+    const router = useRouter()
     if (!session?.user.adm) {
         return (<Layout><Typography>Não autorizado!</Typography></Layout>)
     }
@@ -29,32 +29,24 @@ export default function Adm() {
 
     const getWinnerByDay = async (dia) => {
         const getWinner = await axios.post('/api/raffle/getWinners', { dia: dia })
-        console.log(getWinner);
+        console.log(getWinner.data);
+        const winners = getWinner.data.map(winner => {
+            return (
+                <>
+                    <ListItem>{winner.user.name} - {dayjs(winner.data).format('DD/MM/YYYY HH:mm:ss')}</ListItem>
+                    <Divider />
+                </>
+            )
+        })
+        return winners
     }
 
 
 
     const dias = datasPresente.map(dia => {
-        const diaFormated = dayjs(dia.dia).utc().format('DD/MM/YYYY')
-        const day = dayjs(dia.dia);
-        getWinnerByDay(day)
+        const diaFormated = dayjs(dia.dia).format('DD/MM/YYYY')
         return (
-            <Grid item xs={12} md={8} lg={4} key={dia.dia}>
-                <Button onClick={() => handleRaffle(dia.dia)}>{diaFormated}</Button>
-                <Paper
-                    sx={{
-                        p: 2,
-                        display: 'flex',
-                        flexDirection: 'column',
-                        justifyContent: 'center',
-                        alignContent: 'center'
-                    }}
-                >
-                    <List>
-                        { }
-                    </List>
-                </Paper>
-            </Grid>
+            <Button key={dia.dia} fullWidth variant="contained" onClick={() => router.push(`/adm/raffle/day/${dayjs(dia.dia).format('DD-MM-YYYY')}`)} sx={{ m: 1 }}>{diaFormated}</Button>
         )
 
     })
