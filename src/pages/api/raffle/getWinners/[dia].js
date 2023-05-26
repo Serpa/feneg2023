@@ -19,7 +19,7 @@ export default async function getWinners(req, res) {
                     user: true
                 }
             });
-            res.status(200).json(winners)
+            res.status(200).json({ ...winners, dia: dia, day: day })
         } catch (error) {
             res.status(400).json({ message: error })
         }
