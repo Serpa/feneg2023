@@ -16,7 +16,7 @@ const fetcher = url => axios.get(url).then(res => res.data)
 
 export default function RaffleDay() {
     const router = useRouter();
-    const dia = router.query.day[0];
+    const dia = router.query.day;
     const day = dayjs(dia, 'DD-MM-YYYY')
     const { data: dataWinner, error: dateError, isLoading: loadingDate } = useSWR(`/api/raffle/getWinners/${router.query.day}`, fetcher, { refreshInterval: 1000 })
     const { data: session, status } = useSession()
