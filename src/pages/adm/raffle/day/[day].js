@@ -1,5 +1,5 @@
 import { Copyright } from '@mui/icons-material'
-import { Button, CircularProgress, Container, Divider, List, ListItem, Typography } from '@mui/material'
+import { Alert, Button, CircularProgress, Container, Divider, List, ListItem, Typography } from '@mui/material'
 import Layout from '@/components/layout'
 import Head from 'next/head'
 import axios from 'axios'
@@ -7,7 +7,7 @@ import useSWR from 'swr'
 import { LoadingButton } from '@mui/lab'
 import { useSession } from 'next-auth/react'
 import { useRouter } from 'next/router'
-import React from 'react'
+import React, { useState } from 'react'
 import dayjs from 'dayjs'
 import customParseFormat from 'dayjs/plugin/customParseFormat'
 dayjs.extend(customParseFormat)
@@ -16,6 +16,7 @@ const fetcher = url => axios.get(url).then(res => res.data)
 
 export default function RaffleDay() {
     const router = useRouter();
+    const [alertError, setAlertError] = useState(false)
     const dia = router.query.day;
     const day = dayjs(dia, 'DD-MM-YYYY')
     const { data: dataWinner, error: dateError, isLoading: loadingDate } = useSWR(`/api/raffle/getWinners/${router.query.day}`, fetcher, { refreshInterval: 1000 })
@@ -33,7 +34,7 @@ export default function RaffleDay() {
             console.log(winner);
         } catch (error) {
             if (error.response.status === 409) {
-
+                setAlertError(true)
             }
         }
 
@@ -59,6 +60,7 @@ export default function RaffleDay() {
                     {dayjs(day).format('DD/MM/YYYY')}
                 </Typography>
                 <Button fullWidth variant="contained" onClick={handleRaffle} sx={{ m: 1 }}>Sortear</Button>
+                {alertError ? <Alert severity="error">Não há mais nenhum usuário que cumpra os requisitos para ser sorteado nesse dia!</Alert> : null}
                 <List>
                     {winners}
                 </List>

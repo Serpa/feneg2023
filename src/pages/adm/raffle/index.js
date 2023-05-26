@@ -7,8 +7,10 @@ import useSWR from 'swr'
 import { LoadingButton } from '@mui/lab'
 import { useState } from 'react'
 import { useSession } from 'next-auth/react'
-import dayjs from 'dayjs'
 import { useRouter } from 'next/router'
+import dayjs from 'dayjs'
+import customParseFormat from 'dayjs/plugin/customParseFormat'
+dayjs.extend(customParseFormat)
 
 const fetcher = url => axios.get(url).then(res => res.data)
 
@@ -23,32 +25,17 @@ export default function Adm() {
     if (dateError) return <div>Erro ao carregar!</div>
     if (loadingDate) return <Layout><CircularProgress /></Layout>
 
-    const handleRaffle = async (day) => {
-        const winner = await axios.post('/api/raffle/getPresenceCount', { dia: day })
-    }
+    const dataFormatada = datasPresente.map(dia => {
+        return dayjs(dia.dia).format('DD/MM/YYYY')
+    })
 
-    const getWinnerByDay = async (dia) => {
-        const getWinner = await axios.post('/api/raffle/getWinners', { dia: dia })
-        console.log(getWinner.data);
-        const winners = getWinner.data.map(winner => {
-            return (
-                <>
-                    <ListItem>{winner.user.name} - {dayjs(winner.data).format('DD/MM/YYYY HH:mm:ss')}</ListItem>
-                    <Divider />
-                </>
-            )
-        })
-        return winners
-    }
+    let uniqueChars = [...new Set(dataFormatada)];
 
-
-
-    const dias = datasPresente.map(dia => {
-        const diaFormated = dayjs(dia.dia).format('DD/MM/YYYY')
+    const dias = uniqueChars.map(dia => {
+        const day = dayjs(dia, 'DD/MM/YYYY').format('DD-MM-YYYY')
         return (
-            <Button key={dia.dia} fullWidth variant="contained" onClick={() => router.push(`/adm/raffle/day/${dayjs(dia.dia).format('DD-MM-YYYY')}`)} sx={{ m: 1 }}>{diaFormated}</Button>
+            <Button key={dia} fullWidth variant="contained" onClick={() => router.push(`/adm/raffle/day/${day}`)} sx={{ m: 1 }}>{dia}</Button>
         )
-
     })
 
     return (
@@ -56,7 +43,10 @@ export default function Adm() {
             <Head>
                 <title>HOME - FENEG 2023 - Sicoob Frutal</title>
             </Head>
-            <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
+            <Container maxWidth="lg" sx={{ mt: 4, mb: 4, display: 'flex', flexDirection: 'column', alignItems: 'center', }}>
+                <Typography variant='h4'>
+                    Dias com Presentes
+                </Typography>
                 {dias}
                 <Copyright sx={{ pt: 4 }} />
             </Container>
