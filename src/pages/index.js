@@ -13,7 +13,7 @@ export default function Home() {
 
 
   const news = data?.map(news => {
-    return (<News {...news} />)
+    return (<News key={news.id} {...news} />)
   })
 
   if (error) return <div>Erro ao carregar!</div>

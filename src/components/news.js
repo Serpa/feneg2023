@@ -10,7 +10,7 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import { IconButton } from '@mui/material';
 import axios from 'axios';
 
-export default function news(props) {
+export default function News(props) {
     const { data: session, status } = useSession()
 
     const handleDelete = async () => {
