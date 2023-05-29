@@ -35,7 +35,7 @@ export default function RaffleDay() {
     const handleRaffle = async () => {
         setLoading(true)
         try {
-            const getWinner = await axios.post(`/api/raffle/getPresenceCount`, { dia: day.toDate(), stands: 1 })
+            const getWinner = await axios.post(`/api/raffle/getPresenceCount`, { dia: day.toDate(), stands: 5 })
             console.log(getWinner);
             setWinner(getWinner.data)
             setLoading(false)
