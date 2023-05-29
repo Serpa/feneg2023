@@ -2,11 +2,13 @@ import prisma from '../../../../utils/prismadb'
 import { getServerSession } from "next-auth/next"
 import { authOptions } from "../../auth/[...nextauth]"
 import dayjs from 'dayjs';
+import customParseFormat from 'dayjs/plugin/customParseFormat'
+dayjs.extend(customParseFormat)
 
 export default async function getPresenceCount(req, res) {
     const { dia } = req.query
     const session = await getServerSession(req, res, authOptions)
-    const day = dayjs(dia,'DD-MM-YYYY');
+    const day = dayjs(dia, 'DD-MM-YYYY');
     if (session) {
         try {
             const presenceCount = await prisma.Presenca.groupBy({
@@ -21,7 +23,7 @@ export default async function getPresenceCount(req, res) {
                     userId: true,
                 }
             });
-            
+
             const raffle = presenceCount.map(user => {
                 if (user._count.userId >= 5) {
                     const entries = Math.floor(user._count.userId / 5)

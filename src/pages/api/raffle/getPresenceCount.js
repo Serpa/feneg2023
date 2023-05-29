@@ -2,6 +2,8 @@ import prisma from '../../../utils/prismadb'
 import { getServerSession } from "next-auth/next"
 import { authOptions } from "../auth/[...nextauth]"
 import dayjs from 'dayjs';
+import customParseFormat from 'dayjs/plugin/customParseFormat'
+dayjs.extend(customParseFormat)
 
 export default async function getPresenceCount(req, res) {
     const { dia, stands } = req.body
