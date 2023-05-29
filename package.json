@@ -35,6 +35,7 @@
     "react-to-print": "^2.14.12",
     "react-zxing": "^1.1.4",
     "swr": "^2.1.5",
+    "uuid": "^9.0.0",
     "xlsx": "https://cdn.sheetjs.com/xlsx-0.19.3/xlsx-0.19.3.tgz"
   },
   "devDependencies": {

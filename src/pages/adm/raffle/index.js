@@ -29,9 +29,7 @@ export default function Adm() {
         return dayjs(dia.dia).format('DD/MM/YYYY')
     })
 
-    let uniqueChars = [...new Set(dataFormatada)];
-
-    const dias = uniqueChars.map(dia => {
+    const dias = dataFormatada.map(dia => {
         const day = dayjs(dia, 'DD/MM/YYYY').format('DD-MM-YYYY')
         return (
             <Button key={dia} fullWidth variant="contained" onClick={() => router.push(`/adm/raffle/day/${day}`)} sx={{ m: 1 }}>{dia}</Button>

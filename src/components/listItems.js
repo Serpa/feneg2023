@@ -8,6 +8,7 @@ import Link from 'next/link';
 import QrCode2Icon from '@mui/icons-material/QrCode2';
 import AssuredWorkloadIcon from '@mui/icons-material/AssuredWorkload';
 import EmojiEventsIcon from '@mui/icons-material/EmojiEvents';
+import NewspaperIcon from '@mui/icons-material/Newspaper';
 
 
 export const mainListItems = (
@@ -67,6 +68,19 @@ export const secondaryListItems = (
           <AssuredWorkloadIcon />
         </ListItemIcon>
         <ListItemText primary="Cadastrar QrCode" />
+      </ListItemButton>
+    </Link>
+
+    <Link href="/adm/news" style={{
+      textDecoration: 'none',
+      color: 'black',
+      fontSize: 30,
+    }}>
+      <ListItemButton>
+        <ListItemIcon>
+          <NewspaperIcon />
+        </ListItemIcon>
+        <ListItemText primary="Cadastrar Notícia" />
       </ListItemButton>
     </Link>
 

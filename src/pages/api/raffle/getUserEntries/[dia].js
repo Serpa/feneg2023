@@ -1,12 +1,12 @@
-import prisma from '../../../utils/prismadb'
+import prisma from '../../../../utils/prismadb'
 import { getServerSession } from "next-auth/next"
-import { authOptions } from "../auth/[...nextauth]"
+import { authOptions } from "../../auth/[...nextauth]"
 import dayjs from 'dayjs';
 
 export default async function getPresenceCount(req, res) {
-    const { dia, stands } = req.body
+    const { dia } = req.query
     const session = await getServerSession(req, res, authOptions)
-    const day = dayjs(dia);
+    const day = dayjs(dia,'DD-MM-YYYY');
     if (session) {
         try {
             const presenceCount = await prisma.Presenca.groupBy({
@@ -21,10 +21,10 @@ export default async function getPresenceCount(req, res) {
                     userId: true,
                 }
             });
-
+            
             const raffle = presenceCount.map(user => {
-                if (user._count.userId >= stands) {
-                    const entries = Math.floor(user._count.userId / stands)
+                if (user._count.userId >= 5) {
+                    const entries = Math.floor(user._count.userId / 5)
                     return {
                         userId: user.userId,
                         entries
@@ -35,7 +35,6 @@ export default async function getPresenceCount(req, res) {
             raffle.map(user => {
                 for (var i = 0; i < user.entries; i++) entries.push(user.userId);
             })
-
             const winners = await prisma.Winners.findMany({
                 where: {
                     dia: {
@@ -49,25 +48,11 @@ export default async function getPresenceCount(req, res) {
                 idWinners.push(e.userId)
             });
             const filteredArray = entries.filter(e => !idWinners.includes(e))
-            const random = Math.floor(Math.random() * filteredArray.length);
             if (filteredArray.length < 1) {
-                res.status(409).json({ message: "Nenhum usuário se enquadra nas condições de vitória!" })
+                res.status(200).json({ users: 0 })
             } else {
-                const getWinner = await prisma.User.findUnique({
-                    where: {
-                        id: filteredArray[random]
-                    }
-                })
-
-                const saveWinner = await prisma.Winners.create({
-                    data: {
-                        userId: filteredArray[random],
-                        data: new Date(),
-                        dia: day.toDate(),
-                    }
-                })
-
-                res.status(200).json(getWinner)
+                console.log(filteredArray);
+                res.status(200).json({ users: filteredArray.length })
             }
         } catch (error) {
             res.status(400).json({ message: error })
