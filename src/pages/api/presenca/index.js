@@ -2,11 +2,19 @@ import prisma from '../../../utils/prismadb'
 import { getServerSession } from "next-auth/next"
 import { authOptions } from "../auth/[...nextauth]"
 import dayjs from 'dayjs'
+var objectSupport = require("dayjs/plugin/objectSupport");
+dayjs.extend(objectSupport);
 
 export default async function Presence(req, res) {
     const session = await getServerSession(req, res, authOptions)
     const { stageId } = req.body
     const day = dayjs(new Date().toDateString())
+    const testeDia = dayjs({
+        year: day.year(),
+        month: day.month(),
+        day: day.date(),
+        hour: 3,
+    })
     if (session) {
         try {
             const checkPresenca = await prisma.Presenca.findFirst({
@@ -26,7 +34,7 @@ export default async function Presence(req, res) {
                     data: {
                         userId: session.user.id,
                         data: new Date(),
-                        dia: day.toDate(),
+                        dia: testeDia.toDate(),
                         stageId
                     }
                 });
