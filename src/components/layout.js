@@ -18,6 +18,7 @@ import { useState } from 'react';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import { useRouter } from 'next/router';
+import CookieConsent from './cookie';
 
 const drawerWidth = 240;
 
@@ -178,6 +179,7 @@ export default function Dashboard(props) {
                     {props.children}
                 </Box>
             </Box>
+            <CookieConsent />
         </ThemeProvider>
     );
 }

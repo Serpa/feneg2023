@@ -25,8 +25,8 @@ export default async function getPresenceCount(req, res) {
             });
 
             const raffle = presenceCount.map(user => {
-                if (user._count.userId >= stands) {
-                    const entries = Math.floor(user._count.userId / stands)
+                if (user._count.userId >= 1) {
+                    const entries = Math.floor(user._count.userId / 1)
                     return {
                         userId: user.userId,
                         entries
