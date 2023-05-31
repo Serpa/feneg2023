@@ -298,7 +298,7 @@ export default function SignUp() {
 
             Aceitação dos Termos e Condições
 
-            1.1. Ao utilizar FENEG 2023, doravante denominado "Serviço", o usuário concorda em cumprir e estar sujeito aos seguintes termos e condições.
+            1.1. Ao utilizar FENEG 2023, doravante denominado &quotServiço&quot, o usuário concorda em cumprir e estar sujeito aos seguintes termos e condições.
 
 
 
@@ -340,7 +340,7 @@ export default function SignUp() {
 
 
 
-            4.2. O usuário concorda com a coleta, uso e processamento de seus dados pessoais de acordo com os termos estabelecidos na Declaração de Privacidade, disponível em [link para a Declaração de Privacidade].
+            4.2. O usuário concorda com a coleta, uso e processamento de seus dados pessoais de acordo com os termos estabelecidos na Declaração de Privacidade.
 
 
 
@@ -350,7 +350,7 @@ export default function SignUp() {
 
             Limitação de Responsabilidade
 
-            5.1. O usuário reconhece e concorda que o uso do Serviço é por sua própria conta e risco. O Serviço é fornecido "no estado em que se encontra" e a FENEG 2023 não oferece garantias de qualquer tipo, expressas ou implícitas.
+            5.1. O usuário reconhece e concorda que o uso do Serviço é por sua própria conta e risco. O Serviço é fornecido &quotno estado em que se encontra&quot e a FENEG 2023 não oferece garantias de qualquer tipo, expressas ou implícitas.
 
 
 
