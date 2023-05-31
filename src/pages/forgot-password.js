@@ -1,6 +1,6 @@
 import { forwardRef, useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { signIn } from 'next-auth/react';
+import { signIn, useSession } from 'next-auth/react';
 import { useRouter } from 'next/router';
 import {
   Box,
@@ -22,6 +22,7 @@ import Head from 'next/head';
 import axios from 'axios';
 import Snackbar from '@mui/material/Snackbar';
 import MuiAlert from '@mui/material/Alert';
+import { useEffect } from 'react';
 
 const defaultTheme = createTheme();
 
@@ -35,6 +36,7 @@ export default function ForgotPassword() {
   const [loading, setLoading] = useState(false);
   const [open, setOpen] = useState(false);
   const [errorRecover, setErrorRecover] = useState('');
+
 
   const handleClose = (event, reason) => {
     if (reason === 'clickaway') {

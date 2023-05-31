@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { signIn } from 'next-auth/react';
+import { signIn, useSession } from 'next-auth/react';
 import { useRouter } from 'next/router';
 import {
   Box,
@@ -19,6 +19,7 @@ import { styled } from '@mui/system';
 import Copyright from '../components/copyright'
 import Image from 'next/image';
 import Head from 'next/head';
+import { useEffect } from 'react';
 
 const defaultTheme = createTheme();
 

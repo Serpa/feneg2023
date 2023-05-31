@@ -51,14 +51,15 @@ export default function ListaQr() {
                     nome: presence.user.name,
                     email: presence.user.email,
                     telefone: presence.user.phone,
+                    cpf: presence.user.cpf,
                     data: dayjs(presence.data).format('DD/MM/YYYY HH:mm:ss'),
                     local: presence.stage.name
                 }
             })
             const worksheet = XLSX.utils.json_to_sheet(dataUpdate);
             const workbook = XLSX.utils.book_new();
-            XLSX.utils.book_append_sheet(workbook, worksheet, name);
-            XLSX.writeFile(workbook, `${name}.xlsx`, { compression: true });
+            XLSX.utils.book_append_sheet(workbook, worksheet, name.substring(0, 30));
+            XLSX.writeFile(workbook, `${name.substring(0, 30)}.xlsx`, { compression: true });
         } catch (error) {
             console.log(error);
         }
@@ -72,6 +73,7 @@ export default function ListaQr() {
                     nome: presence.user.name,
                     email: presence.user.email,
                     telefone: presence.user.phone,
+                    cpf: presence.user.cpf,
                     data: dayjs(presence.data).format('DD/MM/YYYY HH:mm:ss'),
                     local: presence.stage?.name
                 }

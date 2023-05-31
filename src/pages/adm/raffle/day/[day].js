@@ -58,6 +58,7 @@ export default function RaffleDay() {
                     nome: winner.user.name,
                     email: winner.user.email,
                     telefone: winner.user.phone,
+                    cpf: winner.user.cpf,
                     data: dayjs(winner.data).format('DD/MM/YYYY HH:mm:ss'),
                 }
             })

@@ -21,7 +21,8 @@ import Image from 'next/image';
 import useSWR from 'swr'
 import axios from 'axios'
 import Head from 'next/head';
-import { signIn } from 'next-auth/react';
+import { signIn, useSession } from 'next-auth/react';
+import { useEffect } from 'react';
 
 const fetcher = url => axios.get(url).then(res => res.data)
 
@@ -37,6 +38,8 @@ export default function ForgotPassword() {
   const [loading, setLoading] = useState(false);
   const [errorRecovery, setErrorRecovery] = useState('');
   const { data, error, isLoading } = useSWR(`/api/recover/check/${router.query.id}`, fetcher)
+
+
   if (error) return (
     <ThemeProvider theme={defaultTheme}>
       <Head>

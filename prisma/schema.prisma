@@ -74,6 +74,7 @@ model User {
   name          String
   email         String     @unique
   phone         String     @unique
+  cpf           String     @unique
   password      String
   emailVerified DateTime?
   image         String?
