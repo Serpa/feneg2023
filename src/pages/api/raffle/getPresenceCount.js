@@ -6,7 +6,7 @@ import customParseFormat from 'dayjs/plugin/customParseFormat'
 dayjs.extend(customParseFormat)
 
 export default async function getPresenceCount(req, res) {
-    const { dia, stands } = req.body
+    const { dia } = req.body
     const session = await getServerSession(req, res, authOptions)
     const day = dayjs(dia);
     if (session) {

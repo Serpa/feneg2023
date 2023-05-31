@@ -53,7 +53,6 @@ export default async function getPresenceCount(req, res) {
             if (filteredArray.length < 1) {
                 res.status(200).json({ users: 0 })
             } else {
-                console.log(filteredArray);
                 res.status(200).json({ users: filteredArray.length })
             }
         } catch (error) {

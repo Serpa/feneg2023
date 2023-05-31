@@ -7,13 +7,13 @@ dayjs.extend(customParseFormat)
 
 export default async function getWinners(req, res) {
     const session = await getServerSession(req, res, authOptions)
-    const { dia } = req.query
-    const day = dayjs(dia, 'DD-MM-YYYY');
+    const { dia } = req.body
+    const day = dayjs(dia);
     if (session) {
         try {
             const winners = await prisma.Winners.findMany({
                 where: {
-                    dia: day.add(3, 'h').toDate(),
+                    dia: day.toDate(),
                 },
                 include: {
                     user: true
@@ -21,6 +21,7 @@ export default async function getWinners(req, res) {
             });
             res.status(200).json(winners)
         } catch (error) {
+            console.log(error);
             res.status(400).json({ message: error })
         }
     } else {

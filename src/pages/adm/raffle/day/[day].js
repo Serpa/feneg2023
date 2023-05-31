@@ -12,6 +12,8 @@ import dayjs from 'dayjs'
 import customParseFormat from 'dayjs/plugin/customParseFormat'
 import WinnerCard from '@/components/winnerCard'
 import LocalActivityIcon from '@mui/icons-material/LocalActivity';
+import FileDownloadIcon from '@mui/icons-material/FileDownload';
+import * as XLSX from "xlsx";
 dayjs.extend(customParseFormat)
 
 const fetcher = url => axios.get(url).then(res => res.data)
@@ -35,8 +37,7 @@ export default function RaffleDay() {
     const handleRaffle = async () => {
         setLoading(true)
         try {
-            const getWinner = await axios.post(`/api/raffle/getPresenceCount`, { dia: day.toDate(), stands: 5 })
-            console.log(getWinner);
+            const getWinner = await axios.post(`/api/raffle/getPresenceCount`, { dia: day.toDate() })
             setWinner(getWinner.data)
             setLoading(false)
 
@@ -49,15 +50,25 @@ export default function RaffleDay() {
 
     }
 
-    // const winners = dataWinner.map(winner => {
-    //     return (
-    //         <React.Fragment key={winner.id}>
-    //             <ListItem>{winner.user.name} - {dayjs(winner.data).format('DD/MM/YYYY HH:mm:ss')}</ListItem>
-    //             <Divider />
-    //         </React.Fragment>
-    //     )
-    // })
-
+    const handleWinners = async () => {
+        try {
+            const getWinners = await axios.post(`/api/raffle/getWinners`, { dia: day.toDate() })
+            let dataUpdate = getWinners.data.map(winner => {
+                return {
+                    nome: winner.user.name,
+                    email: winner.user.email,
+                    telefone: winner.user.phone,
+                    data: dayjs(winner.data).format('DD/MM/YYYY HH:mm:ss'),
+                }
+            })
+            const worksheet = XLSX.utils.json_to_sheet(dataUpdate);
+            const workbook = XLSX.utils.book_new();
+            XLSX.utils.book_append_sheet(workbook, worksheet, dia);
+            XLSX.writeFile(workbook, `${dia}.xlsx`, { compression: true });
+        } catch (error) {
+            console.log(error);
+        }
+    }
 
     return (
         <Layout>
@@ -69,7 +80,7 @@ export default function RaffleDay() {
                     Sorteio do dia {dayjs(day).format('DD/MM/YYYY')}
                 </Typography>
                 <Paper elevation={6} sx={{ width: '40%', display: 'flex', flexDirection: 'column', alignItems: 'center', m: 2 }}>
-                    <Typography variant='h5'  sx={{m: 2}}>
+                    <Typography variant='h5' sx={{ m: 2 }}>
                         Concorrentes
                     </Typography>
                     <Typography variant='h6'>
@@ -86,6 +97,16 @@ export default function RaffleDay() {
                     variant="contained"
                 >
                     Sortear
+                </LoadingButton>
+                <LoadingButton
+                    sx={{ m: 1 }}
+                    onClick={handleWinners}
+                    endIcon={<FileDownloadIcon />}
+                    loading={loading}
+                    loadingPosition="end"
+                    variant="contained"
+                >
+                    Exportar Sorteados
                 </LoadingButton>
                 {alertError ? <Alert severity="error">Não há mais nenhum usuário que cumpra os requisitos para ser sorteado nesse dia!</Alert> : null}
                 {winner ? <WinnerCard name={winner.name} phone={winner.phone} photo={winner.image} /> : false}
