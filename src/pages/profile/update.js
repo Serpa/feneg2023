@@ -219,13 +219,6 @@ export default function SignUp() {
           >
             Atualizar
           </LoadingButton>
-          <Grid container justifyContent="flex-end">
-            <Grid item>
-              <Link href="/login" variant="body2">
-                Já tem uma conta? Clique aqui
-              </Link>
-            </Grid>
-          </Grid>
         </Box>
       </Box>
     </Layout>

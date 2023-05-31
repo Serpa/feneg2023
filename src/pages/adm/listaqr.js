@@ -73,7 +73,7 @@ export default function ListaQr() {
                     email: presence.user.email,
                     telefone: presence.user.phone,
                     data: dayjs(presence.data).format('DD/MM/YYYY HH:mm:ss'),
-                    local: presence.stage.name
+                    local: presence.stage?.name
                 }
             })
             const worksheet = XLSX.utils.json_to_sheet(dataUpdate);

@@ -16,6 +16,7 @@ export default async function getPresence(req, res) {
                     stage: true,
                 },
             });
+            console.log(presenca);
             res.status(200).json(presenca)
         } catch (error) {
             res.status(400).json({ message: error })

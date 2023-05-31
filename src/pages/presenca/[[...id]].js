@@ -37,11 +37,19 @@ export default function Presenca() {
 
     const { ref } = useZxing({
         onResult(result) {
-            setName(data.filter(e => {
+            const getname = data.filter(e => {
                 return e.id == result
-            }))
-            setOpen(true);
-            setResult(result.getText());
+            })
+            if (getname.length > 0) {
+                setName(getname)
+                setOpen(true);
+                setResult(result.getText());
+            }else{
+                setSeverity('error')
+                setSnackbars(true)
+                setMsg('QrCode Inválido!')
+            }
+
         },
     });
 
