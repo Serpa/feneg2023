@@ -45,9 +45,9 @@ model Presenca {
   userId  String   @db.ObjectId
   data    DateTime
   dia     DateTime
-  stageId String?   @db.ObjectId
+  stageId String?  @db.ObjectId
   user    User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-  stage   Stage?    @relation(fields: [stageId], references: [id], onDelete: Cascade)
+  stage   Stage?   @relation(fields: [stageId], references: [id], onDelete: Cascade)
 }
 
 model News {

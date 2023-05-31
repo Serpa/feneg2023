@@ -4,7 +4,6 @@ import { authOptions } from "../auth/[...nextauth]"
 
 export default async function getPresence(req, res) {
     const session = await getServerSession(req, res, authOptions)
-    const { stageId } = req.body
     if (session) {
         try {
             const presenca = await prisma.Presenca.findMany({

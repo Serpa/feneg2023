@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { forwardRef, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { signIn } from 'next-auth/react';
 import { useRouter } from 'next/router';
@@ -19,6 +19,9 @@ import { styled } from '@mui/system';
 import Copyright from '../components/copyright'
 import Image from 'next/image';
 import Head from 'next/head';
+import axios from 'axios';
+import Snackbar from '@mui/material/Snackbar';
+import MuiAlert from '@mui/material/Alert';
 
 const defaultTheme = createTheme();
 
@@ -30,11 +33,40 @@ export default function ForgotPassword() {
   const router = useRouter();
   const { handleSubmit, register, formState: { errors } } = useForm();
   const [loading, setLoading] = useState(false);
-  const [errorLogin, setErrorLogin] = useState('');
+  const [open, setOpen] = useState(false);
+  const [errorRecover, setErrorRecover] = useState('');
+
+  const handleClose = (event, reason) => {
+    if (reason === 'clickaway') {
+      return;
+    }
+
+    setOpen(false);
+  };
 
   const onSubmit = async (data) => {
-    console.log(data);
+    setErrorRecover('')
+    setLoading(true)
+    try {
+      const sendEmail = await axios.post('/api/recover/send', { email: data.email })
+      setLoading(false)
+      if (sendEmail.status === 200) {
+        setOpen(true);
+        router.push('/login')
+      }
+    } catch (error) {
+      if (error.response.status === 404) {
+        setErrorRecover('E-mail não encontrado!')
+      } else {
+        setErrorRecover('Erro ao enviar e-mail, procure suporte!')
+      }
+      setLoading(false)
+    }
   };
+
+  const Alert = forwardRef(function Alert(props, ref) {
+    return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
+  });
 
   return (
     <ThemeProvider theme={defaultTheme}>
@@ -55,7 +87,7 @@ export default function ForgotPassword() {
           <Typography component="h1" variant="h5">
             Recuperar Senha
           </Typography>
-          <Box component="form" noValidate onSubmit={handleSubmit(onSubmit)} sx={{ mt: 3, width:'100%'}}>
+          <Box component="form" noValidate onSubmit={handleSubmit(onSubmit)} sx={{ mt: 3, width: '100%' }}>
             <Grid container spacing={2}>
               <Grid item xs={12}>
                 <TextField
@@ -76,7 +108,7 @@ export default function ForgotPassword() {
                 {errors.email && <ErrorText>Este campo é obrigatório</ErrorText>}
               </Grid>
             </Grid>
-            {errorLogin ? (<Alert severity="error">{errorLogin}</Alert>) : false}
+            {errorRecover ? (<Alert severity="error">{errorRecover}</Alert>) : false}
             <LoadingButton
               loading={loading}
               type="submit"
@@ -90,6 +122,11 @@ export default function ForgotPassword() {
             >
               Enviar
             </LoadingButton>
+            <Snackbar open={open} autoHideDuration={5000} onClose={handleClose}>
+              <Alert onClose={handleClose} severity="success" sx={{ width: '100%' }}>
+                E-mail enviado com sucesso, verifique sua caixa de e-mail para recuperar o acesso a sua conta!
+              </Alert>
+            </Snackbar>
             <Grid container justifyContent="flex-end">
               <Grid item>
                 <Link href="/register" variant="body2">
