@@ -60,20 +60,21 @@ export default function SignUp() {
 
 
   const onSubmit = async (data) => {
-    selectedImage ? setImgError(false) : setImgError(true);
     setEmailError(false)
     setPhoneError(false)
     setLoading(true);
-    if (selectedImage && data.name && data.phone && data.email && data.password && data.termos) {
+    if (data.name && data.phone && data.email && data.password && data.termos) {
       try {
         const user = await axios.post('/api/register', data);
-        const fileRef = ref(storage, `avatars/${user.data.id}.jpg`);
-        await uploadBytes(fileRef, selectedImage);
-        const photo_url = await getDownloadURL(fileRef);
-        const userWithPhoto = await axios.post('/api/register/photo', {
-          id: user.data.id,
-          photo: photo_url,
-        });
+        if (selectedImage) {
+          const fileRef = ref(storage, `avatars/${user.data.id}.jpg`);
+          await uploadBytes(fileRef, selectedImage);
+          const photo_url = await getDownloadURL(fileRef);
+          const userWithPhoto = await axios.post('/api/register/photo', {
+            id: user.data.id,
+            photo: photo_url,
+          });
+        }
         const auth = await signIn('credentials', {
           email: data.email,
           password: data.password,
@@ -255,7 +256,7 @@ export default function SignUp() {
                 </Link> e autorizo o uso dos meus dados.</Typography>
               </Grid>
             </Grid>
-                {errors.termos ? <Alert severity="error">É preciso aceitar os termos.</Alert> : false}
+            {errors.termos ? <Alert severity="error">É preciso aceitar os termos.</Alert> : false}
             <LoadingButton
               loading={loading}
               type="submit"
