@@ -4,11 +4,13 @@ import { authOptions } from "../auth/[...nextauth]"
 import dayjs from 'dayjs'
 var objectSupport = require("dayjs/plugin/objectSupport");
 dayjs.extend(objectSupport);
+var utc = require('dayjs/plugin/utc')
+dayjs.extend(utc)
 
 export default async function Presence(req, res) {
     const session = await getServerSession(req, res, authOptions)
     const { stageId } = req.body
-    const day = dayjs(new Date().toDateString())
+    const day = dayjs.utc().subtract(3, 'hour')
     const testeDia = dayjs({
         year: day.year(),
         month: day.month(),
@@ -20,7 +22,8 @@ export default async function Presence(req, res) {
             const checkPresenca = await prisma.Presenca.findFirst({
                 where: {
                     userId: session.user.id,
-                    stageId
+                    stageId,
+                    dia: testeDia.toDate()
                 },
                 include: {
                     user: true,
@@ -38,7 +41,6 @@ export default async function Presence(req, res) {
                         stageId
                     }
                 });
-                // console.log(presenca);
                 res.status(200).json(presenca)
             }
         } catch (error) {

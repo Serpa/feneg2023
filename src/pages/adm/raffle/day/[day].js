@@ -82,7 +82,7 @@ export default function RaffleDay() {
                 </Typography>
                 <Paper elevation={6} sx={{ width: '40%', display: 'flex', flexDirection: 'column', alignItems: 'center', m: 2 }}>
                     <Typography variant='h5' sx={{ m: 2 }}>
-                        Concorrentes
+                        Entradas no Sorteio
                     </Typography>
                     <Typography variant='h6'>
                         {users.users}
