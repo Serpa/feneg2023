@@ -2,7 +2,7 @@ import NextAuth from "next-auth"
 import CredentialsProvider from "next-auth/providers/credentials";
 import { PrismaAdapter } from "@next-auth/prisma-adapter"
 import prisma from "../../../utils/prismadb"
-const bcrypt = require('bcrypt');
+import { compare } from 'bcrypt'
 
 export const authOptions = {
     adapter: PrismaAdapter(prisma),
@@ -26,13 +26,13 @@ export const authOptions = {
                         email: credentials.email
                     }
                 })
-
                 if (dbUser) {
-                    if (await bcrypt.compare(credentials.password, dbUser.password)) {
+                    if (await compare(credentials.password, dbUser.password)) {
                         delete dbUser.password
                         return dbUser
                     }
                 }
+
                 return null;
             }
         })
@@ -52,34 +52,34 @@ export const authOptions = {
             return token;
         }
     },
-    cookies: {
-        sessionToken: {
-            name: `next-auth.session-token`,
-            options: {
-                httpOnly: true,
-                sameSite: 'lax',
-                path: '/',
-                secure: true
-            }
-        },
-        callbackUrl: {
-            name: `next-auth.callback-url`,
-            options: {
-                sameSite: 'lax',
-                path: '/',
-                secure: true
-            }
-        },
-        csrfToken: {
-            name: `next-auth.csrf-token`,
-            options: {
-                httpOnly: true,
-                sameSite: 'lax',
-                path: '/',
-                secure: true
-            }
-        },
-    }
+    // cookies: {
+    //     sessionToken: {
+    //         name: `next-auth.session-token`,
+    //         options: {
+    //             httpOnly: true,
+    //             sameSite: 'lax',
+    //             path: '/',
+    //             secure: true
+    //         }
+    //     },
+    //     callbackUrl: {
+    //         name: `next-auth.callback-url`,
+    //         options: {
+    //             sameSite: 'lax',
+    //             path: '/',
+    //             secure: true
+    //         }
+    //     },
+    //     csrfToken: {
+    //         name: `next-auth.csrf-token`,
+    //         options: {
+    //             httpOnly: true,
+    //             sameSite: 'lax',
+    //             path: '/',
+    //             secure: true
+    //         }
+    //     },
+    // }
 }
 
 export default NextAuth(authOptions)

@@ -6,9 +6,11 @@ import customParseFormat from 'dayjs/plugin/customParseFormat'
 dayjs.extend(customParseFormat)
 
 export default async function getPresenceCount(req, res) {
+    
     const { dia } = req.query
     const session = await getServerSession(req, res, authOptions)
     const day = dayjs(dia, 'DD-MM-YYYY');
+
     if (session) {
         try {
             const presenceCount = await prisma.Presenca.groupBy({
@@ -26,7 +28,7 @@ export default async function getPresenceCount(req, res) {
 
             const raffle = presenceCount.map(user => {
                 if (user._count.userId >= 1) {
-                    const entries = Math.floor(user._count.userId / 1)
+                    const entries = Math.floor(user._count.userId / 10)
                     return {
                         userId: user.userId,
                         entries
@@ -37,6 +39,7 @@ export default async function getPresenceCount(req, res) {
             raffle.map(user => {
                 for (var i = 0; i < user.entries; i++) entries.push(user.userId);
             })
+
             const winners = await prisma.Winners.findMany({
                 where: {
                     dia: {
@@ -45,6 +48,7 @@ export default async function getPresenceCount(req, res) {
                     },
                 }
             })
+
             const idWinners = []
             winners.forEach(e => {
                 idWinners.push(e.userId)

@@ -30,7 +30,7 @@ export default async function CheckEmail(req, res) {
                     passwordLost: uuidv4()
                 }
             })
-            const recoverLink = `${process.env.NEXTAUTH_URL}recover-password/${createLink.passwordLost}`
+            const recoverLink = `${process.env.NEXTAUTH_URL}/recover-password/${createLink.passwordLost}`
 
             const html = `
             <!DOCTYPE html>
