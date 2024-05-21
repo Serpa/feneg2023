@@ -54,15 +54,21 @@ export default function SignUp() {
             ...data,
             image: photo_url
           });
-        }
-        const userUpdate = await axios.post('/api/update/profile', {
-          ...data,
-          image: session.user.image
-        });
-        if (userUpdate.status === 200) {
-          setLoading(false);
-          update(userUpdate.data)
-          router.push('/')
+          if (userUpdate.status === 200) {
+            setLoading(false);
+            update(userUpdate.data)
+            router.push('/')
+          }
+        } else {
+          const userUpdate = await axios.post('/api/update/profile', {
+            ...data,
+            image: session.user.image
+          });
+          if (userUpdate.status === 200) {
+            setLoading(false);
+            update(userUpdate.data)
+            router.push('/')
+          }
         }
       } catch (error) {
         setLoading(false);
