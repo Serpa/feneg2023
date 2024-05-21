@@ -179,7 +179,7 @@ export default function Dashboard(props) {
                     {props.children}
                 </Box>
             </Box>
-            <CookieConsent />
+            {/* <CookieConsent /> */}
         </ThemeProvider>
     );
 }
