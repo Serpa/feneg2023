@@ -88,7 +88,7 @@ export default function Presenca() {
     return (
         <Layout>
             <Head>
-                <title>Presença - FENEG 2023 - Sicoob Frutal</title>
+                <title>Presença - FENEG  - Sicoob Frutal</title>
             </Head>
             {/* {router.query.id} */}
             <video style={{ width: '100%', height: '100%' }} ref={ref} />

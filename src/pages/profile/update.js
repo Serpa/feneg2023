@@ -100,7 +100,7 @@ export default function SignUp() {
   return (
     <Layout>
       <Head>
-        <title>Registro - FENEG 2023 - Sicoob Frutal</title>
+        <title>Registro - FENEG  - Sicoob Frutal</title>
       </Head>
       <Box
         sx={{

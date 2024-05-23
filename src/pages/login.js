@@ -61,7 +61,7 @@ export default function SignUp() {
   return (
     <ThemeProvider theme={defaultTheme}>
       <Head>
-        <title>Entrar - FENEG 2023 - Sicoob Frutal</title>
+        <title>Entrar - FENEG - Sicoob Frutal</title>
       </Head>
       <Container component="main" maxWidth="xs">
         <CssBaseline />

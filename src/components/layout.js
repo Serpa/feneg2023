@@ -117,7 +117,7 @@ export default function Dashboard(props) {
                             sx={{ flexGrow: 1 }}
 
                         >
-                            <Link href='/' style={{ textDecoration: 'none', color: '#ffffff' }}>FENEG 2023</Link>
+                            <Link href='/' style={{ textDecoration: 'none', color: '#ffffff' }}>FENEG</Link>
                         </Typography>
                         <IconButton color="inherit" aria-controls={open ? 'basic-menu' : undefined}
                             aria-haspopup="true"

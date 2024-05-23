@@ -134,7 +134,7 @@ export default function ListaQr() {
     return (
         <Layout>
             <Head>
-                <title>HOME - FENEG 2023 - Sicoob Frutal</title>
+                <title>HOME - FENEG  - Sicoob Frutal</title>
             </Head>
             <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
                 <ReactToPrint

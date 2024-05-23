@@ -8,7 +8,7 @@ export default function User() {
   return (
     <Layout>
       <Head>
-        <title>Perfil - FENEG 2023 - Sicoob Frutal</title>
+        <title>Perfil - FENEG  - Sicoob Frutal</title>
       </Head>
       <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
         <Grid container spacing={3}>

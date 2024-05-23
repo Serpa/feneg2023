@@ -23,7 +23,7 @@ export default function Profile() {
   return (
     <Layout>
       <Head>
-        <title>Perfil - FENEG 2023 - Sicoob Frutal</title>
+        <title>Perfil - FENEG  - Sicoob Frutal</title>
       </Head>
       <Container>
         <Box

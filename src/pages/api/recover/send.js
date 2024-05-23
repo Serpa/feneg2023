@@ -83,7 +83,7 @@ export default async function CheckEmail(req, res) {
 
 <body>
   <div class="container">
-    <h1>Recuperação de Senha - FENEG 2023</h1>
+    <h1>Recuperação de Senha - FENEG </h1>
     <p>Olá,${createLink.name}</p>
     <p>Recebemos uma solicitação de recuperação de senha para a sua conta. Se você não solicitou essa recuperação, por favor, ignore este e-mail.</p>
     <p>Caso tenha sido você, clique no botão abaixo para redefinir a sua senha:</p>
@@ -101,11 +101,11 @@ export default async function CheckEmail(req, res) {
 
             const mailData = {
                 from: {
-                    name: `FENEG 2023 - Sicoob Frutal`,
-                    address: "feneg2023@gmail.com",
+                    name: `FENEG  - Sicoob Frutal`,
+                    address: "feneg@gmail.com",
                 },
                 to: email,
-                subject: `Recuperar Senha - FENEG 2023`,
+                subject: `Recuperar Senha - FENEG `,
                 html: html,
             };
 

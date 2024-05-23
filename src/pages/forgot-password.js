@@ -73,7 +73,7 @@ export default function ForgotPassword() {
   return (
     <ThemeProvider theme={defaultTheme}>
       <Head>
-        <title>Esqueci a Senha - FENEG 2023 - Sicoob Frutal</title>
+        <title>Esqueci a Senha - FENEG - Sicoob Frutal</title>
       </Head>
       <Container component="main" maxWidth="xs">
         <CssBaseline />

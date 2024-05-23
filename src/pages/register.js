@@ -118,7 +118,7 @@ export default function SignUp() {
   return (
     <ThemeProvider theme={defaultTheme}>
       <Head>
-        <title>Registro - FENEG 2023 - Sicoob Frutal</title>
+        <title>Registro - FENEG - Sicoob Frutal</title>
       </Head>
       <Container component="main" maxWidth="xs">
         <CssBaseline />
@@ -299,7 +299,7 @@ export default function SignUp() {
 
             Aceitação dos Termos e Condições
 
-            1.1. Ao utilizar FENEG 2023, doravante denominado &quotServiço&quot, o usuário concorda em cumprir e estar sujeito aos seguintes termos e condições.
+            1.1. Ao utilizar FENEG, doravante denominado &quotServiço&quot, o usuário concorda em cumprir e estar sujeito aos seguintes termos e condições.
 
 
 
@@ -327,17 +327,17 @@ export default function SignUp() {
 
             Propriedade Intelectual
 
-            3.1. Todos os direitos de propriedade intelectual relacionados ao Serviço, incluindo software, design, marcas registradas, logotipos, conteúdo e outros materiais, são de propriedade exclusiva da FENEG 2023 ou de seus licenciadores.
+            3.1. Todos os direitos de propriedade intelectual relacionados ao Serviço, incluindo software, design, marcas registradas, logotipos, conteúdo e outros materiais, são de propriedade exclusiva da FENEG ou de seus licenciadores.
 
 
 
-            3.2. O usuário concorda em não copiar, modificar, distribuir, transmitir, exibir, publicar ou criar trabalhos derivados do conteúdo do Serviço, a menos que tenha obtido permissão prévia por escrito da FENEG 2023.
+            3.2. O usuário concorda em não copiar, modificar, distribuir, transmitir, exibir, publicar ou criar trabalhos derivados do conteúdo do Serviço, a menos que tenha obtido permissão prévia por escrito da FENEG.
 
 
 
             Privacidade e Proteção de Dados
 
-            4.1. A FENEG 2023 valoriza a privacidade dos usuários e está comprometida em proteger os dados pessoais coletados durante o uso do Serviço.
+            4.1. A FENEG valoriza a privacidade dos usuários e está comprometida em proteger os dados pessoais coletados durante o uso do Serviço.
 
 
 
@@ -345,13 +345,13 @@ export default function SignUp() {
 
 
 
-            4.3. A FENEG 2023 tomará as medidas adequadas para proteger a segurança dos dados pessoais dos usuários, seguindo as melhores práticas de segurança da informação.
+            4.3. A FENEG tomará as medidas adequadas para proteger a segurança dos dados pessoais dos usuários, seguindo as melhores práticas de segurança da informação.
 
 
 
             Limitação de Responsabilidade
 
-            5.1. O usuário reconhece e concorda que o uso do Serviço é por sua própria conta e risco. O Serviço é fornecido &quotno estado em que se encontra&quot e a FENEG 2023 não oferece garantias de qualquer tipo, expressas ou implícitas.
+            5.1. O usuário reconhece e concorda que o uso do Serviço é por sua própria conta e risco. O Serviço é fornecido &quotno estado em que se encontra&quot e a FENEG  não oferece garantias de qualquer tipo, expressas ou implícitas.
 
 
 
@@ -361,7 +361,7 @@ export default function SignUp() {
 
             Disposições Gerais
 
-            6.1. Estes Termos e Condições constituem o acordo completo entre o usuário e a FENEG 2023.
+            6.1. Estes Termos e Condições constituem o acordo completo entre o usuário e a FENEG .
           </DialogContentText>
         </DialogContent>
         <DialogActions>
