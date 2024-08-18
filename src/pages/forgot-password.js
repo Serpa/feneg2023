@@ -1,75 +1,76 @@
-// import { forwardRef, useState } from 'react';
-// import { useForm } from 'react-hook-form';
-// import { signIn, useSession } from 'next-auth/react';
-// import { useRouter } from 'next/router';
-// import {
-//   Box,
-//   Container,
-//   CssBaseline,
-//   Grid,
-//   Link,
-//   TextField,
-//   Typography,
-//   createTheme,
-//   ThemeProvider,
-//   Alert,
-// } from '@mui/material';
-// import LoadingButton from '@mui/lab/LoadingButton';
-// import { styled } from '@mui/system';
-// import Copyright from '../components/copyright'
-// import Image from 'next/image';
-// import Head from 'next/head';
-// import axios from 'axios';
-// import Snackbar from '@mui/material/Snackbar';
-// import MuiAlert from '@mui/material/Alert';
-// import { useEffect } from 'react';
+import { forwardRef, useState } from 'react';
+import { useForm } from 'react-hook-form';
+import { signIn, useSession } from 'next-auth/react';
+import { useRouter } from 'next/router';
+import {
+  Box,
+  Container,
+  CssBaseline,
+  Grid,
+  Link,
+  TextField,
+  Typography,
+  createTheme,
+  ThemeProvider,
+  Alert,
+} from '@mui/material';
+import LoadingButton from '@mui/lab/LoadingButton';
+import { styled } from '@mui/system';
+import Copyright from '../components/copyright'
+import Image from 'next/image';
+import Head from 'next/head';
+import axios from 'axios';
+import Snackbar from '@mui/material/Snackbar';
+import MuiAlert from '@mui/material/Alert';
+import { useEffect } from 'react';
 
-// const defaultTheme = createTheme();
+const defaultTheme = createTheme();
 
-// const ErrorText = styled(Typography)`
-//   color: red;
-// `;
+const ErrorText = styled(Typography)`
+  color: red;
+`;
 
-// export default function ForgotPassword() {
-//   const router = useRouter();
-//   const { handleSubmit, register, formState: { errors } } = useForm();
-//   const [loading, setLoading] = useState(false);
-//   const [open, setOpen] = useState(false);
-//   const [errorRecover, setErrorRecover] = useState('');
+export default function ForgotPassword() {
+  const router = useRouter();
+  const { handleSubmit, register, formState: { errors } } = useForm();
+  const [loading, setLoading] = useState(false);
+  const [open, setOpen] = useState(false);
+  const [errorRecover, setErrorRecover] = useState('');
 
 
-//   const handleClose = (event, reason) => {
-//     if (reason === 'clickaway') {
-//       return;
-//     }
+  const handleClose = (event, reason) => {
+    if (reason === 'clickaway') {
+      return;
+    }
 
-//     setOpen(false);
-//   };
+    setOpen(false);
+  };
 
-//   const onSubmit = async (data) => {
-//     setErrorRecover('')
-//     setLoading(true)
-//     try {
-//       const sendEmail = await axios.post('/api/recover/send', { email: data.email })
-//       setLoading(false)
-//       if (sendEmail.status === 200) {
-//         setOpen(true);
-//         router.push('/login')
-//       }
-//     } catch (error) {
-//       if (error.response.status === 404) {
-//         setErrorRecover('E-mail não encontrado!')
-//       } else {
-//         setErrorRecover('Erro ao enviar e-mail, procure suporte!')
-//       }
-//       setLoading(false)
-//     }
-//   };
+  const onSubmit = async (data) => {
+    setErrorRecover('')
+    setLoading(true)
+    try {
+      const sendEmail = await axios.post('/api/recover/send', { email: data.email })
+      setLoading(false)
+      if (sendEmail.status === 200) {
+        setOpen(true);
+        router.push('/login')
+      }
+    } catch (error) {
+      if (error.response.status === 404) {
+        setErrorRecover('E-mail não encontrado!')
+      } else {
+        setErrorRecover('Erro ao enviar e-mail, procure suporte!')
+      }
+      setLoading(false)
+    }
+  };
 
-//   const Alert = forwardRef(function Alert(props, ref) {
-//     return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
-//   });
+  const Alert = forwardRef(function Alert(props, ref) {
+    return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
+  });
 
+  return null;
 //   return (
 //     <ThemeProvider theme={defaultTheme}>
 //       <Head>
@@ -142,4 +143,4 @@
 //       </Container>
 //     </ThemeProvider>
 //   );
-// }
+}
