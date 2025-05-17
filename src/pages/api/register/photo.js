@@ -2,7 +2,6 @@ import prisma from '../../../utils/prismadb'
 
 export default async function RegisterPhoto(req, res) {
     const { id, photo } = req.body
-    console.log(id, photo);
     try {
         const user = await prisma.User.update({
             where: {

@@ -46,7 +46,6 @@ export default function News() {
         console.log(data);
         selectedImage ? setImgError(false) : setImgError(true);
         setLoading(true);
-        console.log(selectedImage);
         if (selectedImage && data.title && data.body) {
             try {
                 const fileRef = ref(storage, `news/${uuidv4()}.jpg`);

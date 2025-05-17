@@ -7,7 +7,6 @@ export default async function deleteStage(req, res) {
     if (session) {
         if (req.method === 'POST') {
             const { id } = req.body
-            console.log(req.body);
             try {
                 const stage = await prisma.Stage.delete({
                     where: {

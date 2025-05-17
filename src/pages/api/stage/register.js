@@ -7,7 +7,6 @@ export default async function RegisterStage(req, res) {
     if (session) {
         if (req.method === 'POST') {
             const { name } = req.body
-            console.log(req.body);
             try {
                 const stage = await prisma.Stage.create({
                     data: {

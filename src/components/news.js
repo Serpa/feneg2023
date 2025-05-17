@@ -16,7 +16,6 @@ export default function News(props) {
     const handleDelete = async () => {
         try {
             const deleteNews = await axios.post('/api/news/delete', { id: props.id })
-            console.log(deleteNews);
         } catch (error) {
             console.log(error);
         }

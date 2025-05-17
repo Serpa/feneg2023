@@ -5,7 +5,7 @@ export default withAuth({
   callbacks: {
     authorized: ({ token, req }) => {
       const { pathname } = req.nextUrl;
-      console.log("Middleware executado em:", pathname, "Token:", token);
+      // console.log("Middleware executado em:", pathname, "Token:", token);
       const publicPaths = ["/login", "/register", "/forgot-password"];
       const isPublic = publicPaths.some((path) => pathname.startsWith(path));
 
